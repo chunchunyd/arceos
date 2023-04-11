@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["current","current_may_uninit","exit","init_scheduler","init_scheduler_secondary","on_timer_tick","run_idle","sleep","sleep_until","spawn","yield_now"],"struct":["TaskId","WaitQueue"]};

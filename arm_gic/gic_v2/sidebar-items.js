@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PPI_BASE","SPI_BASE"],"enum":["Polarity","TriggerMode"],"struct":["GicCpuInterface","GicDistributor"]};

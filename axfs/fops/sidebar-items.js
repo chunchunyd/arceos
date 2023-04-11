@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Directory","File","OpenOptions"],"type":["DirEntry","FileAttr","FilePerm","FileType"]};

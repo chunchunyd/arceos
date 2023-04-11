@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PAGE_SIZE_4K"],"fn":["memory_regions","phys_to_virt","virt_to_phys"],"struct":["MemRegion","MemRegionFlags","PhysAddr","VirtAddr"]};

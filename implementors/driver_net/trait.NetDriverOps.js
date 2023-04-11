@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"driver_virtio":[["impl&lt;H: <a class=\"trait\" href=\"driver_virtio/trait.VirtIoHal.html\" title=\"trait driver_virtio::VirtIoHal\">Hal</a>, T: Transport, const QS: <a class=\"primitive\" href=\"https://doc.rust-lang.org/nightly/core/primitive.usize.html\">usize</a>&gt; NetDriverOps for <a class=\"struct\" href=\"driver_virtio/struct.VirtIoNetDev.html\" title=\"struct driver_virtio::VirtIoNetDev\">VirtIoNetDev</a>&lt;H, T, QS&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

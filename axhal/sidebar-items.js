@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["arch","console","cpu","irq","mem","misc","time","trap"]};

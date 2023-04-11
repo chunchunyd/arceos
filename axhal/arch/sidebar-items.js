@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["disable_irqs","enable_irqs","flush_tlb","irqs_enabled","read_page_table_root","set_tap_vector_base","wait_for_irqs","write_page_table_root"],"struct":["TaskContext","TrapFrame"]};
