@@ -9,9 +9,13 @@ authors = ["Youjie Zheng <zyj578335934@gmail.com>"]
 [dependencies]
 axalloc = { path = "../axalloc" }
 spinlock = { path = "../../crates/spinlock" }
+axerrno = { path = "../../crates/axerrno" }
 axtask = { path = "../axtask" }
+axsync = { path = "../axsync" }
 axhal = { path = "../axhal" }
 axlog = { path = "../axlog" }
+axfs = { path = "../axfs" }
+axio = { path = "../../crates/axio" }
 memory_addr = { path = "../../crates/memory_addr" }
 lazy_init = { path = "../../crates/lazy_init"}
 riscv = "0.10"

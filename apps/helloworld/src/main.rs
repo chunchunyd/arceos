@@ -3,5 +3,5 @@
 
 #[no_mangle]
 fn main() {
-    libax::task::exit(0);
+    libax::syscall::sys_write(1, b"Hello, ooo!\n");
 }

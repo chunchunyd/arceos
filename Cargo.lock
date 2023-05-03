@@ -303,8 +303,12 @@ name = "axprocess"
 version = "0.1.0"
 dependencies = [
  "axalloc",
+ "axerrno",
+ "axfs",
  "axhal",
+ "axio",
  "axlog",
+ "axsync",
  "axtask",
  "lazy_init",
  "memory_addr",

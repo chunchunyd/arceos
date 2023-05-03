@@ -1,8 +1,9 @@
-use alloc::{collections::BTreeMap, string::String, sync::Arc, vec::Vec};
+use alloc::{collections::BTreeMap, string::String, sync::Arc, vec, vec::Vec};
 use axhal::arch::{write_page_table_root, TrapFrame};
-use axlog::info;
+
 pub const USER_STACK_SIZE: usize = 4096;
 const KERNEL_STACK_SIZE: usize = 4096;
+
 use crate::mem::memory_set::{get_app_data, MemorySet};
 use axtask::{
     clone_flags::CloneFlags, current, task::TaskInner, AxTaskRef, TaskId, IDLE_TASK, RUN_QUEUE,
@@ -10,8 +11,12 @@ use axtask::{
 use spinlock::SpinNoIrq;
 
 use riscv::asm;
+use crate::fs::file_io::FileIO;
+use crate::fs::stdio::{Stderr, Stdin, Stdout};
+
 pub static PID2PC: SpinNoIrq<BTreeMap<u64, Arc<Process>>> = SpinNoIrq::new(BTreeMap::new());
 pub const KERNEL_PROCESS_ID: u64 = 1;
+
 /// 进程的的数据结构
 pub struct Process {
     /// 进程的pid和初始化的线程的tid是一样的
@@ -32,6 +37,8 @@ pub struct ProcessInner {
     pub is_zombie: bool,
     /// 退出状态码
     pub exit_code: i32,
+    /// 文件描述符表
+    pub fd_table: Vec<Option<Arc<dyn FileIO + Send + Sync>>>,
 }
 
 impl ProcessInner {
@@ -43,10 +50,27 @@ impl ProcessInner {
             memory_set,
             is_zombie: false,
             exit_code: 0,
+            fd_table: vec![
+                // 标准输入
+                Some(Arc::new(Stdin)),
+                // 标准输出
+                Some(Arc::new(Stdout)),
+                // 标准错误
+                Some(Arc::new(Stderr)),
+            ]
         }
     }
     pub fn get_page_table_token(&self) -> usize {
         self.memory_set.lock().page_table_token()
+    }
+    pub fn alloc_fd(&mut self) -> usize {
+        for (i, fd) in self.fd_table.iter().enumerate() {
+            if fd.is_none() {
+                return i;
+            }
+        }
+        self.fd_table.push(None);
+        self.fd_table.len() - 1
     }
 }
 
@@ -175,9 +199,9 @@ impl Process {
         &self,
         flags: CloneFlags,
         stack: Option<usize>,
-        ptid: usize,
+        _ptid: usize,
         tls: usize,
-        ctid: usize,
+        _ctid: usize,
     ) -> u64 {
         let mut inner = self.inner.lock();
         // 是否共享虚拟地址空间
