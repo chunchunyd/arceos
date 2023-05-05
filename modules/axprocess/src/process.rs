@@ -1,9 +1,11 @@
 use alloc::{collections::BTreeMap, string::String, sync::Arc, vec, vec::Vec};
 use axhal::arch::{write_page_table_root, TaskContext, TrapFrame};
-use axfs::api::{File, FileType, OpenOptions};
+// use axfs::api::{File, FileType, OpenOptions};
 use axlog::info;
+
 pub const USER_STACK_SIZE: usize = 4096;
 const KERNEL_STACK_SIZE: usize = 4096;
+
 use crate::{
     flags::{CloneFlags, WaitStatus},
     mem::memory_set::{get_app_data, MemorySet},
@@ -16,9 +18,10 @@ use axtask::{
 use spinlock::SpinNoIrq;
 
 use riscv::asm;
-use axio::Read;
+// use axio::Read;
 use crate::fs::file_io::FileIO;
 use crate::fs::stdio::{Stderr, Stdin, Stdout};
+use crate::fs::{read_file, read_file_with_offset};
 
 pub static PID2PC: SpinNoIrq<BTreeMap<u64, Arc<Process>>> = SpinNoIrq::new(BTreeMap::new());
 pub const KERNEL_PROCESS_ID: u64 = 1;
@@ -63,7 +66,7 @@ impl ProcessInner {
                 Some(Arc::new(Stdout)),
                 // 标准错误
                 Some(Arc::new(Stderr)),
-            ]
+            ],
         }
     }
     pub fn get_page_table_token(&self) -> usize {
@@ -90,15 +93,10 @@ impl Process {
         let mut memory_set = MemorySet::new_from_kernel();
         let page_table_token = memory_set.page_table_token();
 
-        // 从fat32.img中读取elf文件
-        let mut file = OpenOptions::new()
-            .read(true)
-            .open(name)
-            .expect("failed to open file");
-        let mut elf_data = Vec::new();
-        file.read_to_end(&mut elf_data).expect("failed to read file");
-
+        // 读取elf文件
+        let mut elf_data = read_file(name).unwrap();
         let (entry, user_stack_bottom) = MemorySet::from_elf(&mut memory_set, elf_data.as_slice());
+
         // 以这种方式建立的线程，不通过某一个具体的函数开始，而是通过地址来运行函数，所以entry不会被用到
         let new_process = Arc::new(Self {
             pid: TaskId::new().as_u64(),
@@ -335,8 +333,8 @@ pub fn init_process() {
     }));
 }
 
-pub fn init_user_process(){
-    let main_task = Process::new("helloworld");
+pub fn init_user_process() {
+    let main_task = Process::new("init/helloworld");
     RUN_QUEUE.lock().add_task(main_task);
 }
 

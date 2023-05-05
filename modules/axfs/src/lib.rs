@@ -26,5 +26,6 @@ pub fn init_filesystems(blk_dev: BlockDevice) {
     info!("  use block device: {:?}", blk_dev.device_name());
 
     let disk = self::dev::Disk::new(blk_dev);
+    info!("  disk size: {} bytes", disk.size());
     self::root::init_rootfs(disk);
 }

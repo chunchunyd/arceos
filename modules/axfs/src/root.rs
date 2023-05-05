@@ -185,7 +185,6 @@ pub(crate) fn init_rootfs(disk: crate::dev::Disk) {
     MAIN_FS.init();
 
     let mut root_dir = RootDirectory::new(MAIN_FS.clone());
-
     #[cfg(feature = "devfs")]
     {
         let null = fs::devfs::NullDev;
@@ -196,12 +195,10 @@ pub(crate) fn init_rootfs(disk: crate::dev::Disk) {
         devfs.add("null", Arc::new(null));
         devfs.add("zero", Arc::new(zero));
         foo_dir.add("bar", Arc::new(bar));
-
         root_dir
             .mount("/dev", Arc::new(devfs))
             .expect("failed to mount devfs at /dev");
     }
-
     ROOT_DIR.init_by(Arc::new(root_dir));
     CURRENT_DIR.init_by(Mutex::new(ROOT_DIR.clone()));
     *CURRENT_DIR_PATH.lock() = "/".into();
