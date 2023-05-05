@@ -150,6 +150,8 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         axdisplay::init_display(all_devices.display);
     }
 
+    axprocess::process::init_user_process();
+
     info!("Initialize interrupt handlers...");
     init_interrupt();
 

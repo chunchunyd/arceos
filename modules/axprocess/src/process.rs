@@ -1,5 +1,6 @@
 use alloc::{collections::BTreeMap, string::String, sync::Arc, vec, vec::Vec};
 use axhal::arch::{write_page_table_root, TaskContext, TrapFrame};
+use axfs::api::{File, FileType, OpenOptions};
 use axlog::info;
 pub const USER_STACK_SIZE: usize = 4096;
 const KERNEL_STACK_SIZE: usize = 4096;
@@ -15,6 +16,7 @@ use axtask::{
 use spinlock::SpinNoIrq;
 
 use riscv::asm;
+use axio::Read;
 use crate::fs::file_io::FileIO;
 use crate::fs::stdio::{Stderr, Stdin, Stdout};
 
@@ -87,7 +89,16 @@ impl Process {
         // let (entry, user_stack_bottom) = load_from_elf(&mut page_table, get_app_data(name));
         let mut memory_set = MemorySet::new_from_kernel();
         let page_table_token = memory_set.page_table_token();
-        let (entry, user_stack_bottom) = MemorySet::from_elf(&mut memory_set, get_app_data(name));
+
+        // 从fat32.img中读取elf文件
+        let mut file = OpenOptions::new()
+            .read(true)
+            .open(name)
+            .expect("failed to open file");
+        let mut elf_data = Vec::new();
+        file.read_to_end(&mut elf_data).expect("failed to read file");
+
+        let (entry, user_stack_bottom) = MemorySet::from_elf(&mut memory_set, elf_data.as_slice());
         // 以这种方式建立的线程，不通过某一个具体的函数开始，而是通过地址来运行函数，所以entry不会被用到
         let new_process = Arc::new(Self {
             pid: TaskId::new().as_u64(),
@@ -322,6 +333,9 @@ pub fn init_process() {
     kernel_process.inner.lock().tasks.push(Arc::clone(unsafe {
         &IDLE_TASK.current_ref_raw().get_unchecked()
     }));
+}
+
+pub fn init_user_process(){
     let main_task = Process::new("helloworld");
     RUN_QUEUE.lock().add_task(main_task);
 }

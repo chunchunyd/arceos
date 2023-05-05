@@ -37,7 +37,7 @@ pub fn syscall_write(fd: usize, buf: *const u8, len: usize) -> isize {
         }
         let file = file.clone();
         drop(process_inner); // release current inner manually to avoid multi-borrow
-        file.write("Test SysWrite\n".as_bytes()).unwrap();
+        // file.write("Test SysWrite\n".as_bytes()).unwrap();
         file.write(unsafe { core::slice::from_raw_parts(buf, len) }).unwrap() as isize
     } else {
         -1
