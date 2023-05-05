@@ -2,13 +2,18 @@
 
 #[macro_use]
 extern crate axlog;
+extern crate alloc;
 
 // #[cfg(all(target_os = "none", not(test)))]
 mod lang_items;
 mod trap;
 
+use alloc::string::String;
 use core::arch::global_asm;
 use core::include_str;
+use axfs::api::{File, FileType, OpenOptions};
+use axio::Read;
+
 global_asm!(include_str!("link_app.S"));
 
 #[cfg(feature = "smp")]
@@ -127,8 +132,16 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         #[allow(unused_variables)]
         let all_devices = axdriver::init_drivers();
 
-        #[cfg(feature = "fs")]
-        axfs::init_filesystems(all_devices.block.0);
+        #[cfg(feature = "fs")]{
+            axfs::init_filesystems(all_devices.block.0);
+            info!("Filesystems initialized.");
+
+            // echo test.txt
+            let mut file = File::options().read(true).open("/test.txt").unwrap();
+            let mut contents = String::new();
+            file.read_to_string(&mut contents);
+            info!("test text contents: {}", contents)
+        }
 
         #[cfg(feature = "net")]
         axnet::init_network(all_devices.net);

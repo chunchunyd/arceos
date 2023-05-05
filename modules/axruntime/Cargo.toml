@@ -24,6 +24,7 @@ kernel_guard = { path = "../../crates/kernel_guard" }
 spinlock = { path = "../../crates/spinlock" }
 lazy_init = { path = "../../crates/lazy_init", optional = true }
 crate_interface = { path = "../../crates/crate_interface" }
+axio = { path = "../../crates/axio" }
 axalloc = { path = "../axalloc", optional = true }
 axconfig = { path = "../axconfig" }
 axdriver = { path = "../axdriver", optional = true }
