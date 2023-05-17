@@ -4,6 +4,7 @@
 //! WithCap在每次方法调用时带入访问权限,使得对底层节点的操作始终带有正确的权限检查。
 //! 整体来说,这个接口定义提供了统一和安全地访问文件系统的方法。通过权限检查和偏移量维护,可以避免许多低级错误。
 
+use alloc::string::String;
 use axerrno::{ax_err, ax_err_type, AxResult};
 use axfs_vfs::{VfsError, VfsNodeRef};
 use axio::SeekFrom;
@@ -101,6 +102,7 @@ impl File {
     fn _open_at(dir: Option<&VfsNodeRef>, path: &str, opts: &OpenOptions) -> AxResult<Self> {
         debug!("open file: {} {:?}", path, opts);
         if !opts.is_valid() {
+            debug!("invalid open options: {:?}", opts);
             return ax_err!(InvalidInput);
         }
 
@@ -155,9 +157,13 @@ impl File {
     }
     /// 读文件, 返回读取的字节数
     pub fn read(&mut self, buf: &mut [u8]) -> AxResult<usize> {
+        // debug!("buf_len!!: {}", buf.len());
+        // let buf_str = String::from_utf8_lossy(buf);
+        // debug!("buf_str!!: {}", buf_str);
         let node = self.node.access(Cap::READ)?;
         let read_len = node.read_at(self.offset, buf)?;
         self.offset += read_len as u64;
+        // debug!("read_len!!: {}", read_len);
         Ok(read_len)
     }
     /// 写文件, 返回写入的字节数

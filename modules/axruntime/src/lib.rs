@@ -147,9 +147,9 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     info!("Primary CPU {} init OK.", cpu_id);
     INITED_CPUS.fetch_add(1, Ordering::Relaxed);
 
-    while !is_init_ok() {
-        core::hint::spin_loop();
-    }
+    // while !is_init_ok() {
+    //     core::hint::spin_loop();
+    // }
     // 初始化为main，但是通过yield转移到gc身上。
     axprocess::start_schedule();
     unreachable!("can not reach!");

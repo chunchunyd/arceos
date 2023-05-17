@@ -1,3 +1,5 @@
+use alloc::string::String;
+use log::debug;
 use axerrno::{AxError, AxResult};
 
 /// File I/O trait. 文件I/O操作
@@ -19,5 +21,11 @@ pub trait FileIO: Send + Sync {
     /// 刷新文件缓冲区
     fn flush(&self) -> AxResult<()> {
         Err(AxError::Unsupported) // 如果没有实现flush, 则返回Unsupported
+    }
+
+
+    /// debug
+    fn print_content(&self){
+        debug!("Function print_content not implemented");
     }
 }

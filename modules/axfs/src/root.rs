@@ -300,6 +300,7 @@ pub(crate) fn create_file(dir: Option<&VfsNodeRef>, path: &str) -> AxResult<VfsN
 ///
 /// 用于在文件系统中创建目录节点。它避免了重复创建已存在的目录节点。
 pub(crate) fn create_dir(dir: Option<&VfsNodeRef>, path: &str) -> AxResult {
+    debug!("root.rs: create_dir: path={}", path);
     match lookup(dir, path) {
         Ok(_) => ax_err!(AlreadyExists),
         Err(AxError::NotFound) => parent_node_of(dir, path).create(path, VfsNodeType::Dir),

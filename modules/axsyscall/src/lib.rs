@@ -1,16 +1,9 @@
 #![cfg_attr(not(test), no_std)]
 use flags::{MMAPFlags, TimeSecs, TimeVal, UtsName, WaitFlags, MMAPPROT, TMS};
-use fs::{syscall_close, syscall_open, syscall_read};
+use fs::*;
 use mem::{syscall_brk, syscall_mmap, syscall_munmap};
-use task::{
-    syscall_clone, syscall_get_time_of_day, syscall_getpid, syscall_getppid, syscall_sleep,
-    syscall_time, syscall_uname, syscall_wait4, syscall_yield,
-};
+use task::*;
 
-use self::{
-    fs::syscall_write,
-    task::{syscall_exec, syscall_exit},
-};
 extern crate axlog;
 extern crate log;
 
@@ -21,13 +14,15 @@ mod mem;
 mod syscall_id;
 #[allow(unused)]
 use syscall_id::*;
+
 mod task;
 #[no_mangle]
 // #[cfg(feature = "user")]
 pub fn syscall(syscall_id: usize, args: [usize; 6]) -> isize {
-    // axlog::info!("syscall: {}", syscall_id);
+    axlog::info!("syscall: {}", get_syscall_name(syscall_id));
+    axlog::info!("args: {:?}", args);
     match syscall_id {
-        SYSCALL_OPENAT => syscall_open(args[0], args[1] as *const u8, args[2] as u8, args[3] as u8), // args[0] is fd, args[1] is filename, args[2] is flags, args[3] is mode
+        SYSCALL_OPENAT => syscall_openat(args[0], args[1] as *const u8, args[2] as usize, args[3] as u8), // args[0] is fd, args[1] is filename, args[2] is flags, args[3] is mode
         SYSCALL_CLOSE => syscall_close(args[0]), // args[0] is fd
         SYSCALL_READ => syscall_read(args[0], args[1] as *mut u8, args[2]),
         SYSCALL_WRITE => syscall_write(args[0], args[1] as *const u8, args[2]),
@@ -56,6 +51,13 @@ pub fn syscall(syscall_id: usize, args: [usize; 6]) -> isize {
             args[4] as i32,
             args[5],
         ),
+        SYSCALL_GETCWD => syscall_getcwd(args[0] as *mut u8, args[1]),
+        SYSCALL_PIPE2 => syscall_pipe2(args[0] as *mut u32),
+        SYSCALL_DUP => syscall_dup(args[0]),
+        SYSCALL_DUP3 => syscall_dup3(args[0], args[1]),
+        SYSCALL_MKDIRAT => syscall_mkdirat(args[0], args[1] as *const u8, args[2] as u32),
+        SYSCALL_CHDIR => syscall_chdir(args[0] as *const u8),
+        SYSCALL_GETDENTS64 => syscall_getdents64(args[0], args[1] as *mut u8),
         _ => {
             panic!("Invalid Syscall Id: {}!", syscall_id);
         }

@@ -226,6 +226,7 @@ impl MemorySet {
             Err(x) => None,
         }
     }
+
     pub fn translate_refmut<T>(&self, ptr: *mut T) -> PagingResult<&'static mut T> {
         let start_va: VirtAddr = (ptr as usize).into();
         match self.page_table.query(start_va) {

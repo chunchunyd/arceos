@@ -13,16 +13,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axconfig/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axconfig/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/axfs/src/root.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/src/root.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axmem/src/paging.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axmem/src/paging.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axprocess/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axprocess/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs_os/src/file.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/src/file.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/axprocess/src/process.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axprocess/src/process.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/syscall_id.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/syscall_id.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +102,9 @@
       <workItem from="1683970396971" duration="121000" />
       <workItem from="1683970525838" duration="205000" />
       <workItem from="1683996445819" duration="12554000" />
+      <workItem from="1684066967172" duration="458000" />
+      <workItem from="1684293506554" duration="1405000" />
+      <workItem from="1684294923435" duration="16356000" />
     </task>
     <servers />
   </component>
