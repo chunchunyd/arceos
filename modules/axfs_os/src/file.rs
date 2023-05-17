@@ -1,15 +1,18 @@
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use super::file_io::FileIO;
 use crate::flags::OpenFlags;
 use alloc::sync::Arc;
 use log::debug;
 use axerrno::{AxError, AxResult};
-use axfs::api::File;
+use axfs::api;
+use axfs::api::{File, ReadDir};
 use axio::{Read, Seek, SeekFrom, Write};
 use axsync::Mutex;
 
 /// 文件描述符
 pub struct FileDesc {
+    /// 文件路径
+    pub path: String,
     /// 文件
     pub file: Arc<Mutex<File>>,
     /// 文件打开的标志位
@@ -38,8 +41,13 @@ impl FileIO for FileDesc {
     fn seek(&self, offset: usize) -> AxResult<u64> {
         self.file.lock().seek(SeekFrom::Start(offset as u64))
     }
+
+    fn get_path(&self) -> String {
+        self.path.clone()
+    }
+
     /// debug
-    fn print_content(&self){
+    fn print_content(&self) {
         debug!("Into function print_content");
         let mut contents = String::new();
         self.file.lock().read_to_string(&mut contents).unwrap();
@@ -50,8 +58,9 @@ impl FileIO for FileDesc {
 /// 文件描述符的实现
 impl FileDesc {
     /// 创建一个新的文件描述符
-    pub fn new(file: Arc<Mutex<File>>, flags: OpenFlags) -> Self {
+    pub fn new(path: &str, file: Arc<Mutex<File>>, flags: OpenFlags) -> Self {
         Self {
+            path: path.to_string(),
             file,
             flags,
         }
@@ -59,35 +68,32 @@ impl FileDesc {
 }
 
 /// 新建一个文件描述符
-pub fn new_fd(path: &str, flags: OpenFlags) -> AxResult<FileDesc> {
+pub fn new_fd(path: String, flags: OpenFlags) -> AxResult<FileDesc> {
     debug!("Into function new_fd, path: {}", path);
     let mut file = File::options();
     file.read(flags.readable());
     file.write(flags.writable());
     file.create(flags.creatable());
     file.create_new(flags.new_creatable());
-    let file = file.open(path)?;
+    let file = file.open(path.as_str())?;
     // let file_size = file.metadata()?.len();
-    let fd = FileDesc::new(Arc::new(Mutex::new(file)), flags);
+    let fd = FileDesc::new(path.as_str(), Arc::new(Mutex::new(file)), flags);
     Ok(fd)
 }
 
 /// 目录描述符
 pub struct DirDesc {
     /// 目录
-    //TODO: work_dir: Arc<Mutex<Directory>>, 支持更复杂的操作
-    //TODO: 现在新建时任何输入string都不会出错，需要检查输入的路径是否是目录
-    pub inner: String,
+    pub dir_path:String,
 }
 
-/// 工作目录描述符的实现
+/// 目录描述符的实现
 impl DirDesc {
-    pub fn new(dir_path: String) -> Self {
-        Self { inner: dir_path }
-    }
-    /// 获取工作目录
-    pub fn get_path(&self) -> String {
-        self.inner.clone()
+    /// 创建一个新的目录描述符
+    pub fn new(path: String) -> Self {
+        Self {
+            dir_path: path,
+        }
     }
 }
 
@@ -108,8 +114,15 @@ impl FileIO for DirDesc {
     fn write(&self, _buf: &[u8]) -> AxResult<usize> {
         Err(AxError::IsADirectory)
     }
+
+    fn get_path(&self) -> String {
+        self.dir_path.to_string().clone()
+    }
 }
 
-pub fn new_dir(dir_path: String) -> AxResult<DirDesc> {
+pub fn new_dir(dir_path: String, _flags: OpenFlags) -> AxResult<DirDesc> {
+    if let Err(e) = api::read_dir(dir_path.as_str()){
+        return Err(e);
+    }
     Ok(DirDesc::new(dir_path))
 }

@@ -1,3 +1,5 @@
+use alloc::boxed::Box;
+use alloc::format;
 use alloc::string::{String, ToString};
 /// 处理关于输出输入的系统调用
 use alloc::sync::Arc;
@@ -8,6 +10,7 @@ use memory_addr::{VirtAddr, PhysAddr};
 use axfs::api;
 use axfs::api::{File, FileType};
 use axfs_os::file::{DirDesc, new_dir};
+use axfs_os::flags::OpenFlags;
 use axfs_os::new_fd;
 use axfs_os::pipe::make_pipe;
 use axprocess::process::current_process;
@@ -15,6 +18,7 @@ use axprocess::process::current_process;
 
 #[allow(unused)]
 const AT_FDCWD: usize = -100isize as usize;
+const AT_REMOVEDIR: usize = 0x200;
 
 // const STDIN: usize = 0;
 // const STDOUT: usize = 1;
@@ -90,26 +94,56 @@ pub fn syscall_write(fd: usize, buf: *const u8, count: usize) -> isize {
 /// 说明：如果打开的是一个目录，那么返回的文件描述符指向的是该目录的描述符。(后面会用到针对目录的文件描述符)
 /// flags: O_RDONLY: 0, O_WRONLY: 1, O_RDWR: 2
 pub fn syscall_openat(fd: usize, path: *const u8, flags: usize, _mode: u8) -> isize {
-    debug!("Into syscall_open. fd: {}, path: {}, flags: {}, mode: {}", fd, path as usize, flags, _mode);
-
     let process = current_process();
     let mut process_inner = process.inner.lock();
     let path = process_inner.memory_set.lock().translate_str(path);
+    debug!("Into syscall_open. fd: {}, path: {}, flags: {}, mode: {}", fd, path, flags, _mode);
+    // 处理path
+    let mut new_path = "".to_string();
+    if !path.starts_with('/') {
+        if fd == AT_FDCWD {
+            new_path = api::canonicalize(path.as_str()).unwrap();
+        } else {
+            if fd >= process_inner.fd_table.len() || fd < 0 {
+                debug!("fd index out of range");
+                return -1;
+            }
+            if let Some(dir) = process_inner.fd_table[fd].as_ref() {
+                let dir = dir.clone();
+                new_path = format!("{}/{}", dir.get_path(), path);
+            } else {
+                debug!("fd not exist");
+                return -1;
+            }
+        }
+    }
+    // // 现在的处理是把DirDesc泄露到内存中，生命周期为整个程序
+    // let new_path = Box::leak(new_path.into_boxed_str());
 
     let fd_num = process_inner.alloc_fd();
     debug!("allocated fd_num: {}", fd_num);
 
-    if let Ok(file) = new_fd(path.as_str(), flags.into()) {
-        debug!("new file_desc successfully allocated");
-        process_inner.fd_table[fd_num] = Some(Arc::new(file));
-        fd_num as isize
-    } else if let Ok(dir) = new_dir(path.to_string()) {
-        debug!("new dir_desc successfully allocated");
-        process_inner.fd_table[fd_num] = Some(Arc::new(dir));
-        fd_num as isize
+    // 如果是DIR
+    if OpenFlags::from(flags).is_dir() {
+        debug!("open dir");
+        if let Ok(dir) = new_dir(new_path, flags.into()) {
+            debug!("new dir_desc successfully allocated");
+            process_inner.fd_table[fd_num] = Some(Arc::new(dir));
+            fd_num as isize
+        } else {
+            debug!("open dir failed");
+            -1
+        }
     } else {
-        debug!("open file/dir failed");
-        -1
+        debug!("open file");
+        if let Ok(file) = new_fd(new_path, flags.into()) {
+            debug!("new file_desc successfully allocated");
+            process_inner.fd_table[fd_num] = Some(Arc::new(file));
+            fd_num as isize
+        } else {
+            debug!("open file failed");
+            -1
+        }
     }
 }
 
@@ -122,12 +156,6 @@ pub fn syscall_close(fd: usize) -> isize {
 
     let process = current_process();
     let mut process_inner = process.inner.lock();
-
-    for i in 0..process_inner.fd_table.len() {
-        if let Some(file) = process_inner.fd_table[i].as_ref() {
-            debug!("fd: {} has file", i);
-        }
-    }
 
     if fd >= process_inner.fd_table.len() {
         debug!("fd {} is out of range", fd);
@@ -143,11 +171,11 @@ pub fn syscall_close(fd: usize) -> isize {
     }
     process_inner.fd_table[fd].take();
 
-    for i in 0..process_inner.fd_table.len() {
-        if let Some(file) = process_inner.fd_table[i].as_ref() {
-            debug!("fd: {} has file", i);
-        }
-    }
+    // for i in 0..process_inner.fd_table.len() {
+    //     if let Some(file) = process_inner.fd_table[i].as_ref() {
+    //         debug!("fd: {} has file", i);
+    //     }
+    // }
 
     0
 }
@@ -280,30 +308,30 @@ pub fn syscall_mkdirat(dirfd: usize, path: *const u8, mode: u32) -> isize {
     let path = process_inner.memory_set.lock().translate_str(path);
     debug!("Into syscall_mkdirat. dirfd: {}, path: {:?}, mode: {}", dirfd, path, mode);
     // debug!("current dir: {}", api::current_dir().unwrap());
-    // 如果 path是绝对路径 或 dirfd是AT_FDCWD
-    if path.starts_with('/') || dirfd == AT_FDCWD {
-        let res = api::create_dir(path.as_str());
-        if res.is_ok() {
-            0
+
+    // 处理path
+    let mut new_path = "".to_string();
+    if !path.starts_with('/') {
+        if dirfd == AT_FDCWD {
+            new_path = api::canonicalize(path.as_str()).unwrap();
         } else {
-            -1
+            if dirfd >= process_inner.fd_table.len() || dirfd < 0 {
+                debug!("fd index out of range");
+                return -1;
+            }
+            if let Some(dir) = process_inner.fd_table[dirfd].as_ref() {
+                let dir = dir.clone();
+                new_path = format!("{}/{}", dir.get_path(), path);
+            } else {
+                debug!("fd not exist");
+                return -1;
+            }
         }
     }
-    else {
-        // TODO 支持dirfd
-        // if dirfd >= process_inner.fd_table.len() {} else if process_inner.fd_table[dirfd].is_none() {
-        //     debug!("dirfd {} is not opened", dirfd);
-        //     return -1;
-        // }
-        // let dir = process_inner.fd_table[dirfd].as_ref().unwrap();
-        // if let Some(dir) = dir.as_ref().downcast_ref::<DirDesc>() {
-        //     let mut dir_inner = dir.inner.lock();
-        //     let res = api::create_dir(path.as_str());
-        //     0
-        // } else {
-        //     debug!("dirfd {} is not a dir", dirfd);
-        //     -1
-        // }
+
+    if let Ok(res) = api::create_dir(new_path.as_str()) {
+        0
+    } else {
         -1
     }
 }
@@ -342,6 +370,7 @@ struct Dirent {
     //文件名
     d_name: [u8],
 }
+
 /// 功能：获取目录的条目;
 /// 参数：
 ///     -fd：所要读取目录的文件描述符。
@@ -354,50 +383,51 @@ struct Dirent {
 ///     char d_name[];	//文件名
 /// };
 /// 返回值：成功执行，返回读取的字节数。当到目录结尾，则返回0。失败，则返回-1。
-pub fn syscall_getdents64(fd: usize, buf: *mut u8) -> isize {
-    let process = current_process();
-    let mut process_inner = process.inner.lock();
-
-    if fd >= process_inner.fd_table.len() {
-        debug!("fd {} is out of range", fd);
-        return -1;
-    }
-    if process_inner.fd_table[fd].is_none() {
-        debug!("fd {} is not opened", fd);
-        return -1;
-    }
-
-    let dir = process_inner.fd_table[fd].as_ref().unwrap();
-    let mut file_inner = file.inner.lock();
-
-    let mut buf = unsafe { core::slice::from_raw_parts_mut(buf, 1024) };
-    let mut offset = 0;
-    let mut cnt = 0;
-    loop {
-        let mut entry = file_inner.dir_entry(offset);
-        if entry.is_none() {
-            break;
-        }
-        let entry = entry.unwrap();
-        let name = entry.file_name();
-        let name = name.as_bytes();
-        let name_len = name.len();
-        let entry_size = 24 + name_len;
-        if buf.len() - cnt < entry_size {
-            break;
-        }
-        unsafe {
-            core::ptr::write(buf.as_mut_ptr().offset(cnt as isize) as *mut u64, entry.inode() as u64);
-            core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 8) as *mut i64, offset as i64 + entry_size as i64);
-            core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 16) as *mut u16, entry_size as u16);
-            core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 18) as *mut u8, entry.file_type() as u8);
-            core::ptr::copy_nonoverlapping(name.as_ptr(), buf.as_mut_ptr().offset(cnt as isize + 24), name_len);
-        }
-        cnt += entry_size;
-        offset += entry_size;
-    }
-    cnt as isize
-}
+// TODO
+// pub fn syscall_getdents64(fd: usize, buf: *mut u8) -> isize {
+//     let process = current_process();
+//     let mut process_inner = process.inner.lock();
+//
+//     if fd >= process_inner.fd_table.len() {
+//         debug!("fd {} is out of range", fd);
+//         return -1;
+//     }
+//     if process_inner.fd_table[fd].is_none() {
+//         debug!("fd {} is not opened", fd);
+//         return -1;
+//     }
+//
+//     let dir = process_inner.fd_table[fd].as_ref().unwrap();
+//     let mut file_inner = file.inner.lock();
+//
+//     let mut buf = unsafe { core::slice::from_raw_parts_mut(buf, 1024) };
+//     let mut offset = 0;
+//     let mut cnt = 0;
+//     loop {
+//         let mut entry = file_inner.dir_entry(offset);
+//         if entry.is_none() {
+//             break;
+//         }
+//         let entry = entry.unwrap();
+//         let name = entry.file_name();
+//         let name = name.as_bytes();
+//         let name_len = name.len();
+//         let entry_size = 24 + name_len;
+//         if buf.len() - cnt < entry_size {
+//             break;
+//         }
+//         unsafe {
+//             core::ptr::write(buf.as_mut_ptr().offset(cnt as isize) as *mut u64, entry.inode() as u64);
+//             core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 8) as *mut i64, offset as i64 + entry_size as i64);
+//             core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 16) as *mut u16, entry_size as u16);
+//             core::ptr::write(buf.as_mut_ptr().offset(cnt as isize + 18) as *mut u8, entry.file_type() as u8);
+//             core::ptr::copy_nonoverlapping(name.as_ptr(), buf.as_mut_ptr().offset(cnt as isize + 24), name_len);
+//         }
+//         cnt += entry_size;
+//         offset += entry_size;
+//     }
+//     cnt as isize
+// }
 
 // /// 功能：创建文件的链接；
 // /// 输入：
@@ -407,147 +437,105 @@ pub fn syscall_getdents64(fd: usize, buf: *mut u8) -> isize {
 // ///     - newpath：文件的新名字。newpath的使用规则同oldpath。
 // ///     - flags：在2.6.18内核之前，应置为0。其它的值详见`man 2 linkat`。
 // /// 返回值：成功执行，返回0。失败，返回-1。
-// pub fn sys_linkat(olddirfd: usize, oldpath: *const u8, newdirfd: usize, newpath: *const u8, flags: usize) -> isize {
+// pub fn sys_linkat(old_dirfd: usize, old_path: *const u8, new_dirfd: usize, new_path: *const u8, flags: usize) -> isize {
 //     let process = current_process();
 //     let mut process_inner = process.inner.lock();
+//     let mut old_path = process_inner.memory_set.lock().translate_str(old_path);
+//     let mut new_path = process_inner.memory_set.lock().translate_str(new_path);
 //
-//     if olddirfd >= process_inner.fd_table.len() {
-//         debug!("olddirfd {} is out of range", olddirfd);
-//         return -1;
-//     }
-//     if process_inner.fd_table[olddirfd].is_none() {
-//         debug!("olddirfd {} is not opened", olddirfd);
-//         return -1;
-//     }
-//     if newdirfd >= process_inner.fd_table.len() {
-//         debug!("newdirfd {} is out of range", newdirfd);
-//         return -1;
-//     }
-//     if process_inner.fd_table[newdirfd].is_none() {
-//         debug!("newdirfd {} is not opened", newdirfd);
-//         return -1;
-//     }
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(oldpath, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("oldpath is too long");
-//             return -1;
+//     // 转化为绝对路径
+//     // 处理path
+//     let mut old_path_ = "".to_string();
+//     if !old_path.starts_with('/') {
+//         if old_dirfd == AT_FDCWD {
+//             old_path_ = api::canonicalize(old_path.as_str()).unwrap();
+//         }else{
+//             if old_dirfd >= process_inner.fd_table.len() || old_dirfd < 0 {
+//                 debug!("old_dirfd index out of range");
+//                 return -1;
+//             }
+//             if let Some(dir) = process_inner.fd_table[old_dirfd].as_ref() {
+//                 let dir = dir.clone();
+//                 old_path_ = format!("{}/{}", dir.get_path(), old_path);
+//             } else {
+//                 debug!("old_dirfd not exist");
+//                 return -1;
+//             }
 //         }
 //     }
-//     let oldpath = unsafe { core::slice::from_raw_parts(oldpath, len) };
-//     let oldpath = core::str::from_utf8(oldpath).unwrap();
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(newpath, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if newpath[i] == 0 {
-//             len = i;
-//             break;
+//     let mut new_path_ = "".to_string();
+//     if !new_path.starts_with('/') {
+//         if new_dirfd == AT_FDCWD {
+//             new_path_ = api::canonicalize(new_path.as_str()).unwrap();
+//         }else{
+//             if new_dirfd >= process_inner.fd_table.len() || new_dirfd < 0 {
+//                 debug!("old_dirfd index out of range");
+//                 return -1;
+//             }
+//             if let Some(dir) = process_inner.fd_table[new_dirfd].as_ref() {
+//                 let dir = dir.clone();
+//                 new_path_ = format!("{}/{}", dir.get_path(), new_path);
+//             } else {
+//                 debug!("old_dirfd not exist");
+//                 return -1;
+//             }
 //         }
-//         if i == 255 {
-//             debug!("newpath is too long");
-//             return -1;
-//         }
 //     }
-//     let newpath = unsafe { core::slice::from_raw_parts(newpath, len) };
-//     let newpath = core::str::from_utf8(newpath).unwrap();
-//
-//     let olddir = process_inner.fd_table[olddirfd].as_ref().unwrap();
-//     let mut olddir_inner = olddir.inner.lock();
-//     let newdir = process_inner.fd_table[newdirfd].as_ref().unwrap();
-//     let mut newdir_inner = newdir.inner.lock();
-//
-//     let oldfile = olddir_inner.find(oldpath);
-//     if oldfile.is_none() {
-//         debug!("oldpath {} is not found", oldpath);
-//         return -1;
-//     }
-//     let oldfile = oldfile.unwrap();
-//     let oldfile_inner = oldfile.inner.lock();
-//     if oldfile_inner.file_type() != FileType::File {
-//         debug!("oldpath {} is not a file", oldpath);
-//         return -1;
-//     }
-//
-//     let newfile = newdir_inner.find(newpath);
-//     if newfile.is_some() {
-//         debug!("newpath {} is already exist", newpath);
-//         return -1;
-//     }
-//
-//     let newfile = oldfile.clone();
-//     let mut newfile_inner = newfile.inner.lock();
-//     newfile_inner.set_name(newpath);
-//     newdir_inner.add(newfile);
-//     0
+//     -1
 // }
-//
-// /// 功能：移除指定文件的链接(可用于删除文件)；
-// /// 输入：
-// ///     - dirfd：要删除的链接所在的目录。
-// ///     - path：要删除的链接的名字。如果path是相对路径，则它是相对于dirfd目录而言的。如果path是相对路径，且dirfd的值为AT_FDCWD，则它是相对于当前路径而言的。如果path是绝对路径，则dirfd被忽略。
-// ///     - flags：可设置为0或AT_REMOVEDIR。
-// /// 返回值：成功执行，返回0。失败，返回-1。
-// pub fn syscall_unlinkat(dirfd: usize, path: *const u8, flags: usize) -> isize {
-//     let process = current_process();
-//     let mut process_inner = process.inner.lock();
-//
-//     if dirfd >= process_inner.fd_table.len() {
-//         debug!("dirfd {} is out of range", dirfd);
-//         return -1;
-//     }
-//     if process_inner.fd_table[dirfd].is_none() {
-//         debug!("dirfd {} is not opened", dirfd);
-//         return -1;
-//     }
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(path, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("path is too long");
-//             return -1;
-//         }
-//     }
-//     let path = unsafe { core::slice::from_raw_parts(path, len) };
-//     let path = core::str::from_utf8(path).unwrap();
-//
-//     let dir = process_inner.fd_table[dirfd].as_ref().unwrap();
-//     let mut dir_inner = dir.inner.lock();
-//
-//     let file = dir_inner.find(path);
-//     if file.is_none() {
-//         debug!("path {} is not found", path);
-//         return -1;
-//     }
-//     let file = file.unwrap();
-//     let mut file_inner = file.inner.lock();
-//     if file_inner.file_type() == FileType::Dir {
-//         if flags != 0 {
-//             dir_inner.remove(path);
-//             0
-//         } else {
-//             debug!("path {} is a directory", path);
-//             return -1;
-//         }
-//     } else {
-//         dir_inner.remove(path);
-//         0
-//     }
-// }
-//
 
-//
+/// 功能：移除指定文件的链接(可用于删除文件)；
+/// 输入：
+///     - dirfd：要删除的链接所在的目录。
+///     - path：要删除的链接的名字。如果path是相对路径，则它是相对于dirfd目录而言的。如果path是相对路径，且dirfd的值为AT_FDCWD，则它是相对于当前路径而言的。如果path是绝对路径，则dirfd被忽略。
+///     - flags：可设置为0或AT_REMOVEDIR。
+/// 返回值：成功执行，返回0。失败，返回-1。
+pub fn syscall_unlinkat(dirfd: usize, path: *const u8, flags: usize) -> isize {
+    let process = current_process();
+    let mut process_inner = process.inner.lock();
+    let path = process_inner.memory_set.lock().translate_str(path);
+
+
+    // 处理path
+    let mut new_path = "".to_string();
+    if !path.starts_with('/') {
+        if dirfd == AT_FDCWD {
+            new_path = api::canonicalize(path.as_str()).unwrap();
+        }else{
+            if dirfd >= process_inner.fd_table.len() || dirfd < 0 {
+                debug!("fd index out of range");
+                return -1;
+            }
+            if let Some(dir) = process_inner.fd_table[dirfd].as_ref() {
+                let dir = dir.clone();
+                new_path = format!("{}/{}", dir.get_path(), path);
+            } else {
+                debug!("fd not exist");
+                return -1;
+            }
+
+        }
+    }
+
+    // unlink
+    if flags == 0 {
+        if let Err(e) = api::remove_file(new_path.as_str()) {
+            debug!("unlink error: {:?}", e);
+            return -1;
+        }
+    } else if flags == AT_REMOVEDIR {
+        if let Err(e) = api::remove_dir(new_path.as_str()) {
+            debug!("rmdir error: {:?}", e);
+            return -1;
+        }
+    } else {
+        debug!("flags error");
+        return -1;
+    }
+    0
+}
+
+
 // /// 功能：卸载文件系统；
 // /// 输入：指定卸载目录，卸载参数；
 // /// 返回值：成功返回0，失败返回-1；
@@ -589,116 +577,61 @@ pub fn syscall_getdents64(fd: usize, buf: *mut u8) -> isize {
 //         return -1;
 //     }
 // }
-//
-// /// 功能：挂载文件系统；
-// /// 输入：
-// ///   - special: 挂载设备；
-// ///   - dir: 挂载点；
-// ///   - fstype: 挂载的文件系统类型；
-// ///   - flags: 挂载参数；
-// ///   - data: 传递给文件系统的字符串参数，可为NULL；
-// /// 返回值：成功返回0，失败返回-1
-// pub fn syscall_mount(
-//     special: *const u8,
-//     dir: *const u8,
-//     fstype: *const u8,
-//     flags: usize,
-//     data: *const u8,
-// ) -> isize {
-//     let process = current_process();
-//     let mut process_inner = process.inner.lock();
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(special, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("special is too long");
-//             return -1;
-//         }
-//     }
-//     let special = unsafe { core::slice::from_raw_parts(special, len) };
-//     let special = core::str::from_utf8(special).unwrap();
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(dir, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("dir is too long");
-//             return -1;
-//         }
-//     }
-//     let dir = unsafe { core::slice::from_raw_parts(dir, len) };
-//     let dir = core::str::from_utf8(dir).unwrap();
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(fstype, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("fstype is too long");
-//             return -1;
-//         }
-//     }
-//     let fstype = unsafe { core::slice::from_raw_parts(fstype, len) };
-//     let fstype = core::str::from_utf8(fstype).unwrap();
-//
-//     let raw_str = unsafe { core::slice::from_raw_parts(data, 256) };
-//     let mut len = 0 as usize;
-//     for i in 0..256 {
-//         if raw_str[i] == 0 {
-//             len = i;
-//             break;
-//         }
-//         if i == 255 {
-//             debug!("data is too long");
-//             return -1;
-//         }
-//     }
-//     let data = unsafe { core::slice::from_raw_parts(data, len) };
-//     let data = core::str::from_utf8(data).unwrap();
-//
-//     let fs = File::new(special, FileType::Dir, 0);
-//     let fs = fs.open();
-//     if fs.is_none() {
-//         debug!("special {} is not exist", special);
-//         return -1;
-//     }
-//     let fs = fs.unwrap();
-//     let mut fs_inner = fs.inner.lock();
-//
-//     let dir = process_inner.find(dir);
-//     if dir.is_none() {
-//         debug!("dir {} is not exist", dir);
-//         return -1;
-//     }
-//     let dir = dir.unwrap();
-//     let mut dir_inner = dir.inner.lock();
-//
-//     if dir_inner.file_type() != FileType::Dir {
-//         debug!("dir {} is not a directory", dir);
-//         return -1;
-//     }
-//
-//     if dir_inner.fs().is_some() {
-//         debug!("dir {} is already mounted", dir);
-//         return -1;
-//     }
-//
-//     fs_inner.mount(dir, fstype, flags, data);
-//     dir_inner.set_fs(Some(fs));
-//     0
-// }
+
+
+/// 功能：挂载文件系统；
+/// 输入：
+///   - special: 挂载设备；
+///   - dir: 挂载点；
+///   - fstype: 挂载的文件系统类型；
+///   - flags: 挂载参数；
+///   - data: 传递给文件系统的字符串参数，可为NULL；
+/// 返回值：成功返回0，失败返回-1
+pub fn syscall_mount(
+    special: *const u8,
+    dir: *const u8,
+    fstype: *const u8,
+    flags: usize,
+    data: *const u8,
+) -> isize {
+    let process = current_process();
+    let mut process_inner = process.inner.lock();
+    let special = process_inner.memory_set.lock().translate_str(special);
+    let dir = process_inner.memory_set.lock().translate_str(dir);
+    let fstype = process_inner.memory_set.lock().translate_str(fstype);
+    let data = process_inner.memory_set.lock().translate_str(data);
+
+    let fs = File::new(special, FileType::Dir, 0);
+    let fs = fs.open();
+    if fs.is_none() {
+        debug!("special {} is not exist", special);
+        return -1;
+    }
+    let fs = fs.unwrap();
+    let mut fs_inner = fs.inner.lock();
+
+    let dir = process_inner.find(dir);
+    if dir.is_none() {
+        debug!("dir {} is not exist", dir);
+        return -1;
+    }
+    let dir = dir.unwrap();
+    let mut dir_inner = dir.inner.lock();
+
+    if dir_inner.file_type() != FileType::Dir {
+        debug!("dir {} is not a directory", dir);
+        return -1;
+    }
+
+    if dir_inner.fs().is_some() {
+        debug!("dir {} is already mounted", dir);
+        return -1;
+    }
+
+    fs_inner.mount(dir, fstype, flags, data);
+    dir_inner.set_fs(Some(fs));
+    0
+}
 //
 // /// 功能：获取文件状态；
 // /// 输入：

@@ -261,7 +261,7 @@ impl Directory {
     pub fn remove_dir(&self, path: &str) -> AxResult {
         crate::root::remove_dir(self.access_at(path)?, path)
     }
-    //获取目录
+    /// 获取目录
     pub fn read_dir(&mut self, dirents: &mut [DirEntry]) -> AxResult<usize> {
         let n = self
             .node

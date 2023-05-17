@@ -411,7 +411,7 @@ pub fn init_kernel_process() {
 
 /// 读取初始化应用程序，作为用户态初始进程
 pub fn init_user_process() {
-    let main_task = Process::new("oscomp/chdir");
+    let main_task = Process::new("oscomp/unlink");
     RUN_QUEUE.lock().add_task(main_task);
 }
 

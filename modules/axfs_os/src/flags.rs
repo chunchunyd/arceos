@@ -62,6 +62,11 @@ impl OpenFlags {
     pub fn new_creatable(&self) -> bool {
         self.contains(Self::EXCLUSIVE)
     }
+
+    /// 获取是否是目录
+    pub fn is_dir(&self) -> bool {
+        self.contains(Self::DIR)
+    }
 }
 
 impl From<usize> for OpenFlags {

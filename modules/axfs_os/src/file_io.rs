@@ -23,6 +23,11 @@ pub trait FileIO: Send + Sync {
         Err(AxError::Unsupported) // 如果没有实现flush, 则返回Unsupported
     }
 
+    /// 获取路径
+    fn get_path(&self) -> String {
+        debug!("Function get_path not implemented");
+        String::from("Function get_path not implemented")
+    }
 
     /// debug
     fn print_content(&self){
