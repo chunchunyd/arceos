@@ -2,7 +2,7 @@
 ARCH ?= riscv64
 SMP ?= 1
 MODE ?= release
-LOG ?= info
+LOG ?= error
 
 A ?= apps/helloworld
 APP ?= $(A)
