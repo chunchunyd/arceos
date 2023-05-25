@@ -342,7 +342,10 @@ pub fn syscall_dup3(fd: usize, new_fd: usize) -> isize {
 pub fn syscall_mkdirat(dir_fd: usize, path: *const u8, mode: u32) -> isize {
     let path = deal_with_path(dir_fd, Some(path), true).unwrap();
     debug!("Into syscall_mkdirat. dirfd: {}, path: {:?}, mode: {}", dir_fd, path.path(), mode);
-    if let Ok(_res) = api::create_dir(path.path()) {
+    let _ = api::create_dir(path.path());
+
+    // 只要文件夹存在就返回0
+    if api::path_exists(path.path()) {
         0
     } else {
         -1
