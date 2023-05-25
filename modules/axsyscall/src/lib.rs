@@ -11,14 +11,17 @@ extern crate axlog;
 extern crate log;
 
 extern crate alloc;
+
 mod flags;
 mod fs;
 mod mem;
 mod syscall_id;
+
 #[allow(unused)]
 use syscall_id::*;
 
 mod task;
+
 #[no_mangle]
 // #[cfg(feature = "user")]
 pub fn syscall(syscall_id: usize, args: [usize; 6]) -> isize {
@@ -60,7 +63,10 @@ pub fn syscall(syscall_id: usize, args: [usize; 6]) -> isize {
         SYSCALL_DUP3 => syscall_dup3(args[0], args[1]),
         SYSCALL_MKDIRAT => syscall_mkdirat(args[0], args[1] as *const u8, args[2] as u32),
         SYSCALL_CHDIR => syscall_chdir(args[0] as *const u8),
-        // SYSCALL_GETDENTS64 => syscall_getdents64(args[0], args[1] as *mut u8, args[2] as usize),
+        // SYSCALL_GETDENTS64 => {
+        //     // panic!("INTO GETDENTS64!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        //     syscall_getdents64(args[0], args[1] as *mut u8, args[2] as usize)
+        // }
         SYSCALL_UNLINKAT => syscall_unlinkat(args[0], args[1] as *const u8, args[2] as usize),
         SYSCALL_MOUNT => syscall_mount(
             args[0] as *const u8,

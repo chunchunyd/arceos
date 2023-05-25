@@ -70,7 +70,9 @@ include scripts/make/qemu.mk
 include scripts/make/build.mk
 include scripts/make/test.mk
 
+
 build: $(OUT_DIR) $(OUT_BIN)
+	cp $(OUT_BIN) ./kernel-qemu
 
 disasm:
 	$(OBJDUMP) $(OUT_ELF) | less
