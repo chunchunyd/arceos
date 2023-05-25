@@ -17,8 +17,25 @@
   <component name="ChangeListManager">
     <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_img.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_img.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/axfs_devfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axfs_devfs/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/axfs_vfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axfs_vfs/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/capability/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/capability/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/page_table_entry/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/page_table_entry/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/percpu/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/percpu/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kernel-qemu" beforeDir="false" afterPath="$PROJECT_DIR$/kernel-qemu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axdriver/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axdriver/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs_os/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axhal/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axhal/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axmem/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axmem/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axprocess/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axprocess/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axsync/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsync/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axtask/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axtask/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/make/cargo.mk" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/make/cargo.mk" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +57,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="merge_fs" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -92,7 +109,7 @@
     &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;merge__fs&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;handle__deps&quot;,
     &quot;last_opened_file_path&quot;: &quot;//wsl$/Ubuntu-20.04/home/ccyd/.cargo/git/checkouts/rust-fatfs-168a09f1b9eebca0/a3a834e&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -112,9 +129,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -137,6 +154,7 @@
       <workItem from="1683970525838" duration="205000" />
       <workItem from="1683996445819" duration="12554000" />
       <workItem from="1685035235359" duration="1646000" />
+      <workItem from="1685053812467" duration="788000" />
     </task>
     <servers />
   </component>
@@ -165,7 +183,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="merge_fs" />
+                        <option value="handle_deps" />
                       </list>
                     </value>
                   </entry>

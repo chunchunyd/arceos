@@ -18,5 +18,6 @@ spinlock = { path = "../../crates/spinlock" }
 axtask = { path = "../axtask", default-features = false }
 
 [dev-dependencies]
-rand = "0.8"
+# rand = "0.8"
+rand = { path = "../../extern_crates/rand-0.8.5" }
 axtask = { path = "../axtask", default-features = false, features = ["test"] }

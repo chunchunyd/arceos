@@ -39,6 +39,7 @@ build_args := \
   --target $(TARGET) \
   --target-dir $(CURDIR)/target \
   --features "$(features-y)" \
+  --offline\
 
 ifeq ($(default_features),n)
   build_args += --no-default-features

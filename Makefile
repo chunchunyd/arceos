@@ -7,7 +7,7 @@ LOG ?= info
 A ?= apps/helloworld
 APP ?= $(A)
 APP_FEATURES ?=
-DISK_IMG ?= disk.img
+DISK_IMG ?= sdcard.img
 
 # 是否启用文件系统，默认启用
 FS ?= y

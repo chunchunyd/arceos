@@ -17,5 +17,5 @@ axmem = { path = "../axmem" }
 axsync = { path = "../axsync" }
 axerrno = { path = "../../crates/axerrno" }
 log = "0.4.0"
-bitflags = "= 2.1.0"
+bitflags = "2.0"
 memory_addr = { path = "../../crates/memory_addr" }
