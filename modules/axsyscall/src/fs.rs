@@ -506,6 +506,15 @@ pub fn syscall_mount(
         debug!("mount_path should be a dir");
         return -1;
     }
+
+    // 如果mount_path不存在，则创建
+    if !api::path_exists(mount_path.path()) {
+        if let Err(e) = api::create_dir(mount_path.path()) {
+            debug!("create mount path error: {:?}", e);
+            return -1;
+        }
+    }
+
     if fs_type != "vfat" {
         debug!("fs_type can only be vfat.");
         return -1;
