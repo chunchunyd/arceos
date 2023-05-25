@@ -8,7 +8,7 @@ authors = ["Yuekai Jia <equation618@gmail.com>"]
 
 [features]
 test = ["percpu?/sp-naive"]
-multitask = [ # without the feature, can still use the empty yield_now() and exit()
+multitask = [# without the feature, can still use the empty yield_now() and exit()
     "dep:axconfig", "dep:percpu", "dep:spinlock", "dep:lazy_init",
     "dep:memory_addr", "dep:scheduler", "dep:timer_list"
 ]
@@ -34,8 +34,9 @@ scheduler = { path = "../../crates/scheduler", optional = true }
 timer_list = { path = "../../crates/timer_list", optional = true }
 kernel_guard = { path = "../../crates/kernel_guard" }
 crate_interface = { path = "../../crates/crate_interface" }
-riscv = "0.10"
+# riscv = "0.10"
+riscv = { path = "../../extern_crates/riscv-0.10.1" }
 [dev-dependencies]
-log = "0.4.0"
-rand = "0.8"
+# rand = "0.8"
+rand = { path = "../../extern_crates/rand-0.8.5" }
 axtask = { path = ".", features = ["test"] }

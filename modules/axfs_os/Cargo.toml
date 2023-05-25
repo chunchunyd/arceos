@@ -15,4 +15,4 @@ axlog = { path = "../axlog" }
 axhal = { path = "../axhal" }
 
 log = "0.4.0"
-bitflags = "= 2.1.0"
+bitflags = "2.0"
