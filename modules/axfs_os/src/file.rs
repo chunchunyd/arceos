@@ -74,6 +74,8 @@ impl FileIO for FileDesc {
         let raw_metadata = metadata.raw_metadata();
         let stat = self.stat.lock();
 
+        debug!("raw_metadata: {:?}", raw_metadata);
+
         let kstat = Kstat {
             st_dev: 1,
             st_ino: 1,
@@ -93,7 +95,9 @@ impl FileIO for FileDesc {
             st_mtime_nsec: 0,
             st_ctime_sec: stat.ctime as isize,
             st_ctime_nsec: 0,
+            _unused: [0; 2],
         };
+        debug!("kstat: {:?}", kstat);
         Ok(kstat)
     }
 

@@ -130,6 +130,7 @@ impl DirEnt {
 
 /// 文件系统信息
 #[derive(Debug, Clone, Copy)]
+#[repr(C)]
 pub struct Kstat {
     /// 设备
     pub st_dev: u64,
@@ -145,7 +146,7 @@ pub struct Kstat {
     pub st_gid: u32,
     /// 设备号
     pub st_rdev: u64,
-    pub _pad0: u64,
+    pub _pad0: u32,
     /// 文件大小
     pub st_size: u64,
     /// 块大小
@@ -165,6 +166,7 @@ pub struct Kstat {
     pub st_ctime_sec: isize,
     /// 最后一次改变状态时间(纳秒)
     pub st_ctime_nsec: isize,
+    pub _unused: [u32; 2],
 }
 bitflags! {
     /// 指定 st_mode 的选项
