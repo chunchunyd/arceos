@@ -8,27 +8,20 @@ use super::FileType;
 use crate::fops;
 
 /// Iterator over the entries in a directory.
-pub struct ReadDir {
-    path: String,
-    // 底层Directory对象
-    inner: fops::Directory,
-    // 缓冲区读取位置
-    buf_pos: usize,
-    // 缓冲区结尾位置
-    buf_end: usize,
+pub struct ReadDir<'a> {
+    path: &'a str,
+    inner: fops::Directory, // 底层Directory对象
+    buf_pos: usize,         // 缓冲区读取位置
+    buf_end: usize,         // 缓冲区结尾位置
     end_of_stream: bool,
-    // 目录条目缓冲区
-    dirent_buf: [fops::DirEntry; 31],
+    dirent_buf: [fops::DirEntry; 128], // 目录条目缓冲区
 }
 
 /// Entries returned by the [`ReadDir`] iterator.
-pub struct DirEntry {
-    // 所在目录路径
-    dir_path: String,
-    // 条目名称
-    entry_name: String,
-    // 条目类型
-    entry_type: FileType,
+pub struct DirEntry<'a> {
+    dir_path: &'a str,    // 所在目录路径
+    entry_name: String,   // 条目名称
+    entry_type: FileType, // 条目类型
 }
 
 /// A builder used to create directories in various manners.
@@ -37,14 +30,14 @@ pub struct DirBuilder {
     recursive: bool, // 是否递归创建上级目录
 }
 
-impl ReadDir {
+impl<'a> ReadDir<'a> {
     /// 新建ReadDir目录迭代器。
-    pub(super) fn new(path: String) -> Result<Self> {
+    pub(super) fn new(path: &'a str) -> Result<Self> {
         let mut opts = fops::OpenOptions::new();
         opts.read(true);
-        let inner = fops::Directory::open_dir(&path, &opts)?;
+        let inner = fops::Directory::open_dir(path, &opts)?;
         const EMPTY: fops::DirEntry = fops::DirEntry::default();
-        let dirent_buf = [EMPTY; 31];
+        let dirent_buf = [EMPTY; 128];
         Ok(ReadDir {
             path,
             inner,
@@ -56,10 +49,10 @@ impl ReadDir {
     }
 }
 
-impl Iterator for ReadDir {
-    type Item = Result<DirEntry>;
+impl<'a> Iterator for ReadDir<'a> {
+    type Item = Result<DirEntry<'a>>;
 
-    fn next(&mut self) -> Option<Result<DirEntry>> {
+    fn next(&mut self) -> Option<Result<DirEntry<'a>>> {
         // 迭代Directory,返回DirEntry
         if self.end_of_stream {
             return None;
@@ -92,7 +85,7 @@ impl Iterator for ReadDir {
             let entry_type = entry.entry_type();
 
             return Some(Ok(DirEntry {
-                dir_path: self.path.clone(),
+                dir_path: self.path,
                 entry_name,
                 entry_type,
             }));
@@ -100,7 +93,7 @@ impl Iterator for ReadDir {
     }
 }
 
-impl DirEntry {
+impl<'a> DirEntry<'a> {
     /// Returns the full path to the file that this entry represents.
     ///
     /// The full path is created by joining the original path to `read_dir`
@@ -121,7 +114,7 @@ impl DirEntry {
     }
 }
 
-impl fmt::Debug for DirEntry {
+impl fmt::Debug for DirEntry<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_tuple("DirEntry").field(&self.path()).finish()
     }

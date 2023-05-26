@@ -81,6 +81,7 @@ impl FilePath {
 // }
 
 /// 目录项
+#[repr(C)]
 pub struct DirEnt {
     /// 索引结点号
     pub d_ino: u64,
