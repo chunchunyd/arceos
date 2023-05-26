@@ -28,7 +28,7 @@ const JUNIOR_TESTCASES: &[&str] = &[
     "fork",
     "fstat",
     "getcwd",
-    // "getdents",
+    "getdents",
     "getpid",
     "getppid",
     "gettimeofday",

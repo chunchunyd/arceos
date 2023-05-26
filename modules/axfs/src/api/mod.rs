@@ -8,11 +8,12 @@ pub use self::dir::{DirBuilder, DirEntry, ReadDir};
 pub use self::file::{File, FileType, Metadata, OpenOptions, Permissions};
 
 use alloc::{string::String, vec::Vec};
+use alloc::string::ToString;
 use axio::{self as io, prelude::*};
 
 /// Returns an iterator over the entries within a directory.
 pub fn read_dir(path: &str) -> io::Result<ReadDir> {
-    ReadDir::new(path)
+    ReadDir::new(path.to_string())
 }
 
 /// Returns the canonical, absolute form of a path with all intermediate
