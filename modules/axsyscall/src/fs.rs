@@ -614,6 +614,7 @@ pub fn syscall_fstat(fd: usize, kst: *mut Kstat) -> isize {
 
     match file.get_stat() {
         Ok(stat) => {
+            debug!("get stat success: {:?}", stat);
             let kstat = unsafe { &mut *kst };
             kstat.st_dev = stat.st_dev;
             kstat.st_ino = stat.st_ino;
@@ -631,6 +632,7 @@ pub fn syscall_fstat(fd: usize, kst: *mut Kstat) -> isize {
             kstat.st_mtime_nsec = stat.st_mtime_nsec;
             kstat.st_ctime_sec = stat.st_ctime_sec;
             kstat.st_ctime_nsec = stat.st_ctime_nsec;
+            debug!("get kstat success: {:?}", kstat);
             0
         }
         Err(e) => {
