@@ -1,15 +1,15 @@
-use alloc::string::{String, ToString};
 use super::file_io::FileIO;
 use crate::flags::OpenFlags;
+use crate::link::get_link_count;
+use crate::types::{normal_file_mode, Kstat, StMode};
+use crate::FilePath;
+use alloc::string::{String, ToString};
 use alloc::sync::Arc;
-use log::debug;
 use axerrno::AxResult;
 use axfs::api::File;
 use axio::{Read, Seek, SeekFrom, Write};
 use axsync::Mutex;
-use crate::FilePath;
-use crate::link::get_link_count;
-use crate::types::{Kstat, normal_file_mode, StMode};
+use log::{debug, info};
 
 /// 文件描述符
 pub struct FileDesc {
@@ -73,9 +73,6 @@ impl FileIO for FileDesc {
         let metadata = file.metadata()?;
         let raw_metadata = metadata.raw_metadata();
         let stat = self.stat.lock();
-
-        debug!("raw_metadata: {:?}", raw_metadata);
-
         let kstat = Kstat {
             st_dev: 1,
             st_ino: 1,
