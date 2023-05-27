@@ -8,7 +8,7 @@ pub use self::dir::{DirBuilder, DirEntry, ReadDir};
 pub use self::file::{File, FileType, Metadata, OpenOptions, Permissions};
 
 use alloc::{string::String, vec::Vec};
-use axio::{self as io, prelude::*};
+use axio::{self as io, prelude::*, SeekFrom};
 
 /// Returns an iterator over the entries within a directory.
 pub fn read_dir(path: &str) -> io::Result<ReadDir> {
@@ -40,6 +40,13 @@ pub fn read(path: &str) -> io::Result<Vec<u8>> {
     Ok(bytes)
 }
 
+/// Read the entire contents of a file into a bytes vector until the buffer is full.
+/// Returns the number of bytes read.
+pub fn read_to_full(path: &str, buf: &mut [u8]) -> io::Result<usize> {
+    let mut file = File::open(path)?;
+    file.read_to_full(buf)
+}
+
 /// Read the entire contents of a file into a string.
 pub fn read_to_string(path: &str) -> io::Result<String> {
     let mut file = File::open(path)?;
@@ -52,6 +59,17 @@ pub fn read_to_string(path: &str) -> io::Result<String> {
 /// Write a slice as the entire contents of a file.
 pub fn write<C: AsRef<[u8]>>(path: &str, contents: C) -> io::Result<()> {
     File::create(path)?.write_all(contents.as_ref())
+}
+
+/// Seek to an offset, in bytes, in a file.
+pub fn seek(path: &str, offset: usize) -> io::Result<u64> {
+    File::open(path)?.seek(SeekFrom::Start(offset as u64))
+}
+
+/// Write as much of a slice as possible into a file.
+/// Returns the number of bytes written.
+pub fn write_many<C: AsRef<[u8]>>(path: &str, contents: C) -> io::Result<usize> {
+    Ok(File::create(path)?.write_many(contents.as_ref()))
 }
 
 /// Given a path, query the file system to get information about a file,

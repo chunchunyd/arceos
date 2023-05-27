@@ -19,6 +19,7 @@ pub use self::error::{Error, Result};
 
 #[cfg(feature = "alloc")]
 use alloc::{string::String, vec::Vec};
+use log::{debug, error};
 
 use axerrno::ax_err;
 
@@ -37,6 +38,27 @@ pub trait Read {
             match self.read(&mut probe) {
                 Ok(0) => return Ok(buf.len() - start_len),
                 Ok(n) => buf.extend_from_slice(&probe[..n]),
+                Err(e) => return Err(e),
+            }
+        }
+    }
+
+    /// Read all bytes until EOF or until buf is full
+    #[cfg(feature = "alloc")]
+    fn read_to_full(&mut self, buf: &mut [u8]) -> Result<usize> {
+        let mut idx: usize = 0;
+        let mut probe = [0u8; 32];
+        loop {
+            match self.read(&mut probe) {
+                Ok(0) => return Ok(idx),
+                Ok(n) => {
+                    if idx + n > buf.len() {
+                        return Ok(idx);
+                    }
+                    debug!("read_to_full: idx={}, n={}, buflen={}", idx, n, buf.len());
+                    buf[idx..idx + n].copy_from_slice(&probe[..n]);
+                    idx += n;
+                }
                 Err(e) => return Err(e),
             }
         }
@@ -87,6 +109,28 @@ pub trait Write {
             }
         }
         Ok(())
+    }
+
+    /// Attempts to write as many bytes as possible into this writer.
+    fn write_many(&mut self, mut buf: &[u8]) -> usize {
+        let mut idx: usize = 0;
+        while !buf.is_empty() {
+            match self.write(buf) {
+                Ok(0) => {
+                    error!("WriteZero: failed to write whole buffer");
+                    return idx;
+                }
+                Ok(n) => {
+                    buf = &buf[n..];
+                    idx += n;
+                }
+                Err(e) => {
+                    error!("WriteError: failed to write whole buffer: {:?}", e);
+                    return idx;
+                }
+            }
+        }
+        idx
     }
 
     /// Writes a formatted string into this writer, returning any error
@@ -237,8 +281,8 @@ pub trait BufRead: Read {
 
 #[cfg(feature = "alloc")]
 unsafe fn append_to_string<F>(buf: &mut String, f: F) -> Result<usize>
-where
-    F: FnOnce(&mut Vec<u8>) -> Result<usize>,
+    where
+        F: FnOnce(&mut Vec<u8>) -> Result<usize>,
 {
     let old_len = buf.len();
     let buf = unsafe { buf.as_mut_vec() };

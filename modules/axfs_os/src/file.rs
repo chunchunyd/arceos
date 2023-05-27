@@ -11,6 +11,7 @@ use axfs::api::File;
 use axio::{Read, Seek, SeekFrom, Write};
 use axsync::Mutex;
 use log::{debug, info};
+use axfs::api;
 
 /// 文件描述符
 pub struct FileDesc {
@@ -38,6 +39,24 @@ pub struct FileMetaData {
     // pub flags: OpenFlags,
 }
 
+impl FileMetaData {
+    pub fn new() -> Self {
+        Self {
+            atime: 0,
+            mtime: 0,
+            ctime: 0,
+            // flags: OpenFlags::empty(),
+        }
+    }
+    // todo: 以下三个函数的实现
+    // pub fn update_atime(&mut self) {
+    // }
+    // pub fn update_mtime(&mut self) {
+    // }
+    // pub fn update_ctime(&mut self) {
+    // }
+}
+
 /// 为FileDesc实现FileIO trait
 impl FileIO for FileDesc {
     fn readable(&self) -> bool {
@@ -49,16 +68,18 @@ impl FileIO for FileDesc {
     }
 
     fn read(&self, buf: &mut [u8]) -> AxResult<usize> {
-        debug!("Into function read, buf_len: {}", buf.len());
-        self.file.lock().read(buf)
+        // self.file.lock().read_to_full(buf)
+        api::read_to_full(&self.path, buf)
     }
 
     fn write(&self, buf: &[u8]) -> AxResult<usize> {
-        self.file.lock().write(buf)
+        // self.file.lock().write(buf)
+        api::write_many(&self.path, buf)
     }
 
     fn seek(&self, offset: usize) -> AxResult<u64> {
-        self.file.lock().seek(SeekFrom::Start(offset as u64))
+        // self.file.lock().seek(SeekFrom::Start(offset as u64))
+        api::seek(&self.path, offset)
     }
 
     fn get_path(&self) -> String {
@@ -70,8 +91,8 @@ impl FileIO for FileDesc {
     }
 
     fn get_stat(&self) -> AxResult<Kstat> {
-        let file = self.file.lock();
-        let metadata = file.metadata()?;
+        // let file = self.file.lock();
+        let metadata = api::metadata(&self.path)?;
         let raw_metadata = metadata.raw_metadata();
         let stat = self.stat.lock();
         let kstat = Kstat {
@@ -99,13 +120,13 @@ impl FileIO for FileDesc {
         Ok(kstat)
     }
 
-    /// debug
-    fn print_content(&self) {
-        debug!("Into function print_content");
-        let mut contents = String::new();
-        self.file.lock().read_to_string(&mut contents).unwrap();
-        debug!("{}", contents);
-    }
+    // /// debug
+    // fn print_content(&self) {
+    //     debug!("Into function print_content");
+    //     let mut contents = String::new();
+    //     self.file.lock().read_to_string(&mut contents).unwrap();
+    //     debug!("{}", contents);
+    // }
 }
 
 /// 文件描述符的实现

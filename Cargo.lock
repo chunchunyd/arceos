@@ -325,6 +325,7 @@ name = "axio"
 version = "0.1.0"
 dependencies = [
  "axerrno",
+ "log",
 ]
 
 [[package]]
