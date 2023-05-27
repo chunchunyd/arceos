@@ -3,6 +3,8 @@ use super::file_io::FileIO;
 use axerrno::{AxError, AxResult};
 use axhal::console::{getchar, write_bytes};
 use axtask::yield_now;
+use crate::FileIOType;
+use crate::FileIOType::FileDesc;
 
 /// stdin file for getting chars from console
 pub struct Stdin;
@@ -45,8 +47,8 @@ impl FileIO for Stdin {
     fn seek(&self, _pos: usize) -> AxResult<u64> {
         Err(AxError::Unsupported) // 如果没有实现seek, 则返回Unsupported
     }
-    fn get_type(&self) -> String {
-        String::from("Stdin")
+    fn get_type(&self) -> FileIOType {
+        FileIOType::Stdin
     }
 }
 
@@ -70,8 +72,8 @@ impl FileIO for Stdout {
     fn seek(&self, _pos: usize) -> AxResult<u64> {
         Err(AxError::Unsupported) // 如果没有实现seek, 则返回Unsupported
     }
-    fn get_type(&self) -> String {
-        String::from("Stdout")
+    fn get_type(&self) -> FileIOType {
+        FileIOType::Stdout
     }
 }
 
@@ -92,7 +94,7 @@ impl FileIO for Stderr {
     fn seek(&self, _pos: usize) -> AxResult<u64> {
         Err(AxError::Unsupported) // 如果没有实现seek, 则返回Unsupported
     }
-    fn get_type(&self) -> String {
-        String::from("Stderr")
+    fn get_type(&self) -> FileIOType {
+        FileIOType::Stderr
     }
 }

@@ -5,6 +5,7 @@ use axerrno::AxResult;
 use axsync::Mutex;
 use axtask::yield_now;
 use crate::file_io::FileIO;
+use crate::FileIOType;
 
 /// IPC pipe
 pub struct Pipe {
@@ -177,7 +178,7 @@ impl FileIO for Pipe {
             }
         }
     }
-    fn get_type(&self) -> String {
-        String::from("Pipe")
+    fn get_type(&self) -> FileIOType {
+        FileIOType::Pipe
     }
 }
