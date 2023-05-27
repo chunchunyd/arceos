@@ -16,6 +16,7 @@ axtask = { path = "../axtask" }
 axhal = { path = "../axhal" }
 axlog = { path = "../axlog" }
 axmem = { path = "../axmem" }
+axerrno = { path = "../../crates/axerrno" }
 axconfig = { path = "../axconfig" }
 axfs_os = { path = "../axfs_os" }
 #riscv = "0.10"

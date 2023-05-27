@@ -1,7 +1,7 @@
 use alloc::sync::Arc;
 use axfs_os::api;
 use axhal::arch::write_page_table_root;
-use axlog::{debug, info};
+use axlog::{debug, error, info};
 use axmem::paging::KERNEL_PAGE_TABLE;
 use axtask::{TaskId, EXITED_TASKS, RUN_QUEUE};
 use spinlock::SpinNoIrq;
@@ -264,6 +264,16 @@ pub fn run_testcases() {
                     asm::sfence_vma_all();
                 };
                 let main_task = Process::new(testcase);
+                let main_task = match main_task {
+                    Ok(main_task) => {
+                        info!("create main task success");
+                        main_task
+                    }
+                    Err(err) => {
+                        error!("create main task failed: {:?}", err);
+                        return Some(u64::MAX);
+                    }
+                };
                 let now_process_id = main_task.get_process_id();
 
                 TESTRESULT
@@ -283,14 +293,19 @@ pub fn run_testcases() {
         );
         EXITED_TASKS.lock().clear();
         if let Some(process_id) = ans {
-            let kernel_process = Arc::clone(PID2PC.lock().get(&KERNEL_PROCESS_ID).unwrap());
-            kernel_process
-                .inner
-                .lock()
-                .children
-                .retain(|x| x.pid == KERNEL_PROCESS_ID);
-            // 去除指针引用，此时process_id对应的进程已经被释放
-            // 释放所有非内核线程
+            if process_id == u64::MAX {
+                // 错误
+                error!("run_testcase {} failed,", testcase.unwrap());
+            } else {
+                let kernel_process = Arc::clone(PID2PC.lock().get(&KERNEL_PROCESS_ID).unwrap());
+                kernel_process
+                    .inner
+                    .lock()
+                    .children
+                    .retain(|x| x.pid == KERNEL_PROCESS_ID);
+                // 去除指针引用，此时process_id对应的进程已经被释放
+                // 释放所有非内核线程的资源
+            }
         } else {
             // 已经测试完所有的测例
             break;

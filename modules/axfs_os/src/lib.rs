@@ -30,13 +30,15 @@ pub use file_io::{FileIO, FileIOType};
 /// 读取path文件的内容，但不新建文件描述符
 /// 用于内核读取代码文件初始化
 pub fn read_file(path: &str) -> AxResult<Vec<u8>> {
-    let mut file = OpenOptions::new()
+    if let Ok(mut file) = OpenOptions::new()
         .read(true)
-        .open(path)
-        .expect("failed to open file");
-    let mut buf = Vec::new();
-    file.read_to_end(&mut buf).expect("failed to read file");
-    Ok(buf)
+        .open(path) {
+        let mut buf = Vec::new();
+        file.read_to_end(&mut buf).expect("failed to read file");
+        return Ok(buf);
+    }
+    info!("failed to open file {}", path);
+    Err(axerrno::AxError::NotFound)
 }
 
 /// 读取文件, 从指定位置开始读取完整内容
