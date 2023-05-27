@@ -375,6 +375,7 @@ name = "axprocess"
 version = "0.1.0"
 dependencies = [
  "axconfig",
+ "axerrno",
  "axfs_os",
  "axhal",
  "axlog",

@@ -8,6 +8,7 @@ use axhal::mem::VirtAddr;
 use axhal::paging::MappingFlags;
 use axlog::info;
 use axmem::memory_set::USER_STACK_SIZE;
+use axerrno::AxResult;
 
 const KERNEL_STACK_SIZE: usize = 4096;
 
@@ -95,12 +96,13 @@ impl ProcessInner {
 
 impl Process {
     /// 根据应用名寻找文件，作为初始化主进程启动
-    pub fn new(path: &'static str) -> AxTaskRef {
+    pub fn new(path: &'static str) -> AxResult<AxTaskRef> {
         // 接下来是加载自己的内容
         // let mut page_table = copy_from_kernel_memory();
         // let (entry, user_stack_bottom) = load_from_elf(&mut page_table, get_app_data(name));
         let mut memory_set = MemorySet::new_from_kernel();
-        let elf_data = read_file(path).unwrap();
+        let elf_data = read_file(path)?;
+
         let (entry, user_stack_bottom, heap_bottom) =
             MemorySet::from_elf(&mut memory_set, elf_data.as_slice());
         // 切换页表
@@ -187,7 +189,7 @@ impl Process {
         drop(inner);
         drop(new_process);
         new_task.set_trap_in_kernel_stack();
-        new_task
+        Ok(new_task)
         // let kernel_sp = new_task.get_kernel_stack_top();
     }
     /// 将当前进程替换为指定的用户程序
@@ -415,9 +417,10 @@ pub fn init_kernel_process() {
 }
 
 /// 将进程转化为调度进程，此时会运行所有的测例文件
-pub fn init_user_process() {
-    let main_task = Process::new("fstat");
+pub fn init_user_process() -> AxResult<()> {
+    let main_task = Process::new("fstat")?;
     RUN_QUEUE.lock().add_task(main_task);
+    Ok(())
 }
 
 /// 获取当前任务对应的进程
