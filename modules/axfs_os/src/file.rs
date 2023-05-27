@@ -2,9 +2,10 @@ use super::file_io::FileIO;
 use crate::flags::OpenFlags;
 use crate::link::get_link_count;
 use crate::types::{normal_file_mode, Kstat, StMode};
-use crate::FilePath;
+use crate::{FileIOType, FilePath};
 use alloc::string::{String, ToString};
 use alloc::sync::Arc;
+use core::any::Any;
 use axerrno::AxResult;
 use axfs::api::File;
 use axio::{Read, Seek, SeekFrom, Write};
@@ -64,8 +65,8 @@ impl FileIO for FileDesc {
         self.path.clone()
     }
 
-    fn get_type(&self) -> String {
-        "FileDesc".to_string()
+    fn get_type(&self) -> FileIOType {
+        FileIOType::FileDesc
     }
 
     fn get_stat(&self) -> AxResult<Kstat> {

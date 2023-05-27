@@ -18,9 +18,9 @@
     <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kernel-qemu" beforeDir="false" afterPath="$PROJECT_DIR$/kernel-qemu" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/src/api/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs_os/src/types.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/src/types.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs_os/src/file.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/src/file.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs_os/src/file_io.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/src/file_io.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +42,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="merge_fs" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,7 +95,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "handle__gdent",
-    "last_opened_file_path": "//wsl$/Ubuntu-20.04/home/ccyd/HW/RustOS/ArceOS/test_prj",
+    "last_opened_file_path": "//wsl$/Ubuntu-20.04/home/ccyd/HW/RustOS/ArceOS/testsuits-for-oskernel",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -114,9 +114,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -138,24 +138,12 @@
       <workItem from="1683970396971" duration="121000" />
       <workItem from="1683970525838" duration="205000" />
       <workItem from="1683996445819" duration="12554000" />
-      <workItem from="1685035235359" duration="1646000" />
-      <workItem from="1685053812467" duration="19894000" />
+      <workItem from="1685202022268" duration="1396000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ID_ORDER">
-      <list>
-        <option value="Default.Root" />
-        <option value="Default.Author" />
-        <option value="Default.Date" />
-        <option value="Default.Subject" />
-        <option value="Space.CommitStatus" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -168,7 +156,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="handle_deps" />
+                        <option value="handle_gdent" />
                       </list>
                     </value>
                   </entry>

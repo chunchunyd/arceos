@@ -3,6 +3,7 @@ use log::debug;
 use axerrno::{AxError, AxResult};
 use axfs::api;
 use crate::file_io::FileIO;
+use crate::FileIOType;
 use crate::flags::OpenFlags;
 
 /// 目录描述符
@@ -43,8 +44,8 @@ impl FileIO for DirDesc {
         self.dir_path.to_string().clone()
     }
 
-    fn get_type(&self) -> String {
-        "DirDesc".to_string()
+    fn get_type(&self) -> FileIOType {
+        FileIOType::DirDesc
     }
 }
 

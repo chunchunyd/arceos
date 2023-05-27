@@ -7,7 +7,7 @@ use axfs_os::link::{create_link, remove_link};
 use axfs_os::mount::{check_mounted, mount_fat_fs, umount_fat_fs};
 use axfs_os::pipe::make_pipe;
 use axfs_os::types::Kstat;
-use axfs_os::{new_dir, new_fd, DirEnt, DirEntType, FilePath};
+use axfs_os::{new_dir, new_fd, DirEnt, DirEntType, FilePath, FileIOType};
 use axprocess::process::current_process;
 use core::mem::transmute;
 use core::ptr::copy_nonoverlapping;
@@ -63,7 +63,7 @@ fn deal_with_path(
         }
         match process_inner.fd_table[dir_fd].as_ref() {
             Some(dir) => {
-                if dir.get_type() != "DirDesc" {
+                if dir.get_type() != FileIOType::DirDesc {
                     debug!("selected fd is not a dir");
                     return None;
                 }
@@ -98,7 +98,7 @@ pub fn syscall_read(fd: usize, buf: *mut u8, count: usize) -> isize {
         return -1;
     }
     if let Some(file) = process_inner.fd_table[fd].as_ref() {
-        if file.get_type() == "DirDesc" {
+        if file.get_type() == FileIOType::DirDesc {
             debug!("fd is a dir");
             return -1;
         }
@@ -134,7 +134,7 @@ pub fn syscall_write(fd: usize, buf: *const u8, count: usize) -> isize {
         return -1;
     }
     if let Some(file) = process_inner.fd_table[fd].as_ref() {
-        if file.get_type() == "DirDesc" {
+        if file.get_type() == FileIOType::DirDesc {
             debug!("fd is a dir");
             return -1;
         }
@@ -142,6 +142,7 @@ pub fn syscall_write(fd: usize, buf: *const u8, count: usize) -> isize {
             return -1;
         }
         let file = file.clone();
+
         drop(process_inner); // release current inner manually to avoid multi-borrow
                              // file.write("Test SysWrite\n".as_bytes()).unwrap();
         file.write(unsafe { core::slice::from_raw_parts(buf, count) })
@@ -617,7 +618,7 @@ pub fn syscall_fstat(fd: usize, kst: *mut Kstat) -> isize {
         return -1;
     }
     let file = process_inner.fd_table[fd].clone().unwrap();
-    if file.get_type() != "FileDesc" {
+    if file.get_type() != FileIOType::FileDesc {
         debug!("fd {} is not a file", fd);
         return -1;
     }

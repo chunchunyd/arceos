@@ -23,7 +23,9 @@ pub use dir::{new_dir, DirDesc};
 pub use file::{new_fd, FileDesc, FileMetaData};
 use log::info;
 pub use stdio::{Stderr, Stdin, Stdout};
+pub use pipe::{Pipe};
 pub use types::{DirEnt, DirEntType, FilePath};
+pub use file_io::{FileIO, FileIOType};
 
 /// 读取path文件的内容，但不新建文件描述符
 /// 用于内核读取代码文件初始化
