@@ -77,6 +77,8 @@ impl<'a> Iterator for ReadDir<'a> {
             }
             let entry = &self.dirent_buf[self.buf_pos];
             self.buf_pos += 1;
+            // debug!("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ReadDir entry buf pos: {:?}", self.buf_pos);
+            // 依然是只有在get_dirent调用时才会有这行输出，但是buf size改回31还是会使其他调用出错
             let name_bytes = entry.name_as_bytes();
             if name_bytes == b"." || name_bytes == b".." {
                 continue;

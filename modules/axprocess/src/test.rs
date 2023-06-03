@@ -49,6 +49,7 @@ const JUNIOR_TESTCASES: &[&str] = &[
     "waitpid",
     "write",
     "yield",
+    "shell",
 ];
 
 /// libc静态测例

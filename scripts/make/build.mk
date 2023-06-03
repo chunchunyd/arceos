@@ -20,7 +20,7 @@ else ifeq ($(APP_LANG), c)
 	$(call cargo_build,-p libax_bindings)
 endif
 
-$(OUT_BIN): _cargo_build $(OUT_ELF)
+$(OUT_BIN): _cargo_build $(OUT_ELF)      
 	$(OBJCOPY) $(OUT_ELF) --strip-all -O binary $@
 
 .PHONY: _cargo_build
