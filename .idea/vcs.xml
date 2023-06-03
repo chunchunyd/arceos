@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extern_crates/bitmap-allocator-98b9ef9bd0253b32/88e871a" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e" vcs="Git" />
   </component>
 </project>

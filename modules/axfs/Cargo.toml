@@ -32,9 +32,9 @@ axdriver = { path = "../axdriver", optional = true }
 axsync = { path = "../axsync", default-features = false }
 
 [dependencies.fatfs]
-git = "https://github.com/rafalh/rust-fatfs"
-rev = "a3a834e"
-#path = "../../extern_crates/rust-fatfs-a3a834e"
+#git = "https://github.com/rafalh/rust-fatfs"
+#rev = "a3a834e"
+path = "../../extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e"
 optional = true
 default-features = false
 features = [ # no std

@@ -16,13 +16,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_img.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_img.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel-qemu" beforeDir="false" afterPath="$PROJECT_DIR$/kernel-qemu" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/src/api/dir.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axprocess/src/test.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axprocess/src/test.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/src/fs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/make/build.mk" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/make/build.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/allocator/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/allocator/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e/build-nostd.sh" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e/build-nostd.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e/scripts/create-test-img.sh" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rust-fatfs-168a09f1b9eebca0/a3a834e/scripts/create-test-img.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/axfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/Cargo.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +143,7 @@
       <workItem from="1685607816853" duration="712000" />
       <workItem from="1685612721408" duration="26000" />
       <workItem from="1685613149245" duration="512000" />
-      <workItem from="1685819007340" duration="2915000" />
+      <workItem from="1685819007340" duration="3793000" />
     </task>
     <servers />
   </component>

@@ -11,5 +11,6 @@ documentation = "https://rcore-os.github.io/arceos/allocator/index.html"
 
 [dependencies]
 buddy_system_allocator = { version = "0.9", default-features = false }
-bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator.git", rev = "88e871a" }
+#bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator.git", rev = "88e871a" }
+bitmap-allocator = { path = "../../extern_crates/bitmap-allocator-98b9ef9bd0253b32/88e871a" }
 slab_allocator = { path = "../slab_allocator" }
