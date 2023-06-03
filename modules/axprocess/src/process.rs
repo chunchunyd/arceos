@@ -4,9 +4,6 @@ use alloc::{collections::BTreeMap, string::String, sync::Arc, vec::Vec};
 use axfs_os::read_file;
 use axfs_os::{file_io::FileIO, Stderr, Stdin, Stdout};
 use axhal::arch::{write_page_table_root, TrapFrame};
-use axhal::mem::VirtAddr;
-use axhal::paging::MappingFlags;
-use axlog::info;
 use axmem::memory_set::USER_STACK_SIZE;
 use axerrno::AxResult;
 

@@ -1,0 +1,11 @@
+ABC = { path = "../../extern_crates/ABC-1.5" }
+DEF = { path = "../../extern_crates/DEF-1.5", optional = true}
+GHI = { path = "../../extern_crates/GHI-3.9.0", features = ["foo", "bar"]}
+
+[dependencies.XYZ]
+path = "../../extern_crates/XYZ-2.1"
+features = ["baz"]
+
+[dependencies.KLM]
+version = "0.1"
+features = ["baz"]

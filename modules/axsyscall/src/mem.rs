@@ -1,7 +1,6 @@
 use crate::flags::{MMAPFlags, MMAPPROT};
 use alloc::vec;
 use axprocess::process::current_process;
-use log::info;
 use memory_addr::{align_down_4k, align_up_4k};
 const MAX_HEAP_SIZE: usize = 4096;
 /// 修改用户堆大小，

@@ -5,12 +5,10 @@ use crate::types::{normal_file_mode, Kstat, StMode};
 use crate::{FileIOType, FilePath};
 use alloc::string::{String, ToString};
 use alloc::sync::Arc;
-use core::any::Any;
 use axerrno::AxResult;
 use axfs::api::File;
-use axio::{Read, Seek, SeekFrom, Write};
 use axsync::Mutex;
-use log::{debug, info};
+use log::{debug};
 use axfs::api;
 
 /// 文件描述符

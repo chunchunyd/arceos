@@ -1,5 +1,4 @@
 use core::time::Duration;
-
 use axfs_os::read_file;
 use axhal::time::{current_time, current_time_nanos, nanos_to_ticks};
 use axprocess::{
@@ -9,7 +8,6 @@ use axprocess::{
 };
 extern crate alloc;
 use alloc::vec::Vec;
-use log::info;
 
 use crate::flags::{TimeSecs, TimeVal, UtsName, WaitFlags, TMS};
 /// 处理与任务（线程）有关的系统调用

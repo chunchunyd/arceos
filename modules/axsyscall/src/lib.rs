@@ -3,7 +3,7 @@
 use axfs_os::types::Kstat;
 use flags::{MMAPFlags, TimeSecs, TimeVal, UtsName, WaitFlags, MMAPPROT, TMS};
 use fs::*;
-use log::{debug, error, info};
+use log::{debug, error};
 use mem::{syscall_brk, syscall_mmap, syscall_munmap};
 use task::*;
 

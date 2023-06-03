@@ -1,4 +1,3 @@
-use alloc::string::String;
 use alloc::sync::{Arc, Weak};
 use log::trace;
 use axerrno::AxResult;

@@ -11,7 +11,7 @@ use axfs_os::{new_dir, new_fd, DirEnt, DirEntType, FilePath, FileIOType};
 use axprocess::process::current_process;
 use core::mem::transmute;
 use core::ptr::copy_nonoverlapping;
-use log::{debug, info};
+use log::{debug};
 
 #[allow(unused)]
 const AT_FDCWD: usize = -100isize as usize;

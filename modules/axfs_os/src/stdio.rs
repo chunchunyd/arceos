@@ -4,7 +4,6 @@ use axerrno::{AxError, AxResult};
 use axhal::console::{getchar, write_bytes};
 use axtask::yield_now;
 use crate::FileIOType;
-use crate::FileIOType::FileDesc;
 
 /// stdin file for getting chars from console
 pub struct Stdin;
