@@ -62,6 +62,11 @@ LD_SCRIPT := $(CURDIR)/modules/axhal/linker_$(ARCH).lds
 OUT_ELF := $(OUT_DIR)/$(APP_NAME)_$(PLATFORM).elf
 OUT_BIN := $(OUT_DIR)/$(APP_NAME)_$(PLATFORM).bin
 
+
+localize:
+	export CARGO_HOME=./crates_download
+	make build
+
 all: build
 
 include scripts/make/utils.mk

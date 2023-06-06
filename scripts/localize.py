@@ -51,18 +51,28 @@ for cargo_toml in cargo_toml_list:
         content = f.read()
         # 1. dep_name = "version"
         pattern = re.compile(rf'{dep_name}\s*=\s*"\d+(\.((\d+)|\*))*"')
+        if re.search(pattern, content):
+            print(f'Found {dep_name} in {cargo_toml}!')
         content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}" }}', content)
         # 2. dep_name = { version = "version", ... }
         pattern = re.compile(rf'{dep_name}\s*=\s*{{\s*version\s*=\s*"\d+(\.\d+)*"')
+        if re.search(pattern, content):
+            print(f'Found {dep_name} in {cargo_toml}!')
         content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}"', content)
         # 3. dep_name = { path = "path", ... }
         pattern = re.compile(rf'{dep_name}\s*=\s*{{\s*path\s*=\s*"(.+?)"')
+        if re.search(pattern, content):
+            print(f'Found {dep_name} in {cargo_toml}!')
         content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}"', content)
         # 4. [dependencies.dep_name]\nversion = "version"
         pattern = re.compile(rf'\.{dep_name}\]\s*version\s*=\s*"\d+(\.((\d+)|\*))*"')
+        if re.search(pattern, content):
+            print(f'Found {dep_name} in {cargo_toml}!')
         content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
         # 5. [dependencies.dep_name]\npath = "path"
         pattern = re.compile(rf'\.{dep_name}\]\s*path\s*=\s*"(.+?)"')
+        if re.search(pattern, content):
+            print(f'Found {dep_name} in {cargo_toml}!')
         content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
 
         with open(cargo_toml, 'w', encoding='utf-8') as f:
