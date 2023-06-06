@@ -12,4 +12,4 @@ documentation = "https://rcore-os.github.io/arceos/axfs_ramfs/index.html"
 [dependencies]
 axfs_vfs = { path = "../axfs_vfs" }
 spin = "0.9"
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }

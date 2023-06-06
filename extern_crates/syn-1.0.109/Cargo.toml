@@ -75,11 +75,11 @@ required-features = [
 ]
 
 [dependencies.proc-macro2]
-path = "../../extern_crates/proc-macro2-1.0.56"
+version = "1.0"
 default-features = false
 
 [dependencies.quote]
-path = "../../extern_crates/quote-1.0.26"
+version = "1.0"
 optional = true
 default-features = false
 

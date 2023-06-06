@@ -40,14 +40,14 @@ name = "xid"
 harness = false
 
 [dev-dependencies.criterion]
-version = "0.4"
+path = "../criterion-0.5.1"
 default-features = false
 
 [dev-dependencies.fst]
 version = "0.4"
 
 [dev-dependencies.rand]
-version = "0.8"
+path = "../rand-0.8.5"
 features = ["small_rng"]
 
 [dev-dependencies.roaring]

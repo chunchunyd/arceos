@@ -25,7 +25,11 @@ for root, dirs, files in os.walk(root_dir):
 # 4. [dependencies.dep_name]\nversion = "version"
 # 4. [dependencies.dep_name]\npath = "path" (我们的目的是转换为这种情况)
 
-dep_name = sys.argv[1]
+op = sys.argv[1]    # localize or restore
+dep_name = sys.argv[2]
+if op == 'restore':
+    version = sys.argv[3]
+
 print(dep_name)
 # 在root_dir下的extern_crates目录下，找到前缀为dep_name的目录
 dep_local_path = ''
@@ -50,30 +54,45 @@ for cargo_toml in cargo_toml_list:
     with open(cargo_toml, 'r', encoding='utf-8') as f:
         content = f.read()
         # 1. dep_name = "version"
-        pattern = re.compile(rf'{dep_name}\s*=\s*"\d+(\.((\d+)|\*))*"')
+        pattern = re.compile(rf'\n{dep_name}\s*=\s*"\d+(\.((\d+)|\*))*"')        # \s
         if re.search(pattern, content):
             print(f'Found {dep_name} in {cargo_toml}!')
-        content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}" }}', content)
+        if op == 'localize':
+            content = re.sub(pattern, f'\n{dep_name} = {{ path = "{dep_local_path_rel}" }}', content)
+        elif op == 'restore':
+            content = re.sub(pattern, f'\n{dep_name} = {{ version = "{version}" }}', content)
         # 2. dep_name = { version = "version", ... }
-        pattern = re.compile(rf'{dep_name}\s*=\s*{{\s*version\s*=\s*"\d+(\.\d+)*"')
+        pattern = re.compile(rf'\n{dep_name}\s*=\s*{{\s*version\s*=\s*"\d+(\.\d+)*"')
         if re.search(pattern, content):
             print(f'Found {dep_name} in {cargo_toml}!')
-        content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}"', content)
+        if op == 'localize':
+            content = re.sub(pattern, f'\n{dep_name} = {{ path = "{dep_local_path_rel}"', content)
+        elif op == 'restore':
+            content = re.sub(pattern, f'\n{dep_name} = {{ version = "{version}"', content)
         # 3. dep_name = { path = "path", ... }
-        pattern = re.compile(rf'{dep_name}\s*=\s*{{\s*path\s*=\s*"(.+?)"')
+        pattern = re.compile(rf'\n{dep_name}\s*=\s*{{\s*path\s*=\s*"(.+?)"')
         if re.search(pattern, content):
             print(f'Found {dep_name} in {cargo_toml}!')
-        content = re.sub(pattern, f'{dep_name} = {{ path = "{dep_local_path_rel}"', content)
+        if op == 'localize':
+            content = re.sub(pattern, f'\n{dep_name} = {{ path = "{dep_local_path_rel}"', content)
+        elif op == 'restore':
+            content = re.sub(pattern, f'\n{dep_name} = {{ version = "{version}"', content)
         # 4. [dependencies.dep_name]\nversion = "version"
         pattern = re.compile(rf'\.{dep_name}\]\s*version\s*=\s*"\d+(\.((\d+)|\*))*"')
         if re.search(pattern, content):
             print(f'Found {dep_name} in {cargo_toml}!')
-        content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
+        if op == 'localize':
+            content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
+        elif op == 'restore':
+            content = re.sub(pattern, f'.{dep_name}]\nversion = "{version}"', content)
         # 5. [dependencies.dep_name]\npath = "path"
         pattern = re.compile(rf'\.{dep_name}\]\s*path\s*=\s*"(.+?)"')
         if re.search(pattern, content):
             print(f'Found {dep_name} in {cargo_toml}!')
-        content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
+        if op == 'localize':
+            content = re.sub(pattern, f'.{dep_name}]\npath = "{dep_local_path_rel}"', content)
+        elif op == 'restore':
+            content = re.sub(pattern, f'.{dep_name}]\nversion = "{version}"', content)
 
         with open(cargo_toml, 'w', encoding='utf-8') as f:
             f.write(content)

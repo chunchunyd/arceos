@@ -69,7 +69,7 @@ version = "1.0"
 default-features = false
 
 [dev-dependencies.rand]
-version = "0.8"
+path = "../rand-0.8.5"
 
 [features]
 any_zlib = []

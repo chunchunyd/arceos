@@ -10,7 +10,7 @@ authors = ["Shiping Yuan <robert_yuan@pku.edu.com>"]
 default = ["axdriver/virtio-gpu"]
 
 [dependencies]
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }
 axdriver = { path = "../axdriver" }
 lazy_init = { path = "../../crates/lazy_init" }
 axsync = { path = "../axsync", default-features = false }

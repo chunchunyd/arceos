@@ -15,4 +15,4 @@ default = []
 
 [dependencies]
 axerrno = { path = "../axerrno" }
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }

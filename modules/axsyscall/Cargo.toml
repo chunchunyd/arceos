@@ -16,6 +16,6 @@ axfs = { path = "../axfs" }
 axmem = { path = "../axmem" }
 axsync = { path = "../axsync" }
 axerrno = { path = "../../crates/axerrno" }
-log = "0.4.0"
+log = { path = "../../extern_crates/log-0.4.17" }
 bitflags = "2.0"
 memory_addr = { path = "../../crates/memory_addr" }

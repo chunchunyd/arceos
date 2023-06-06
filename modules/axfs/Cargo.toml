@@ -17,7 +17,7 @@ fatfs = ["dep:fatfs"]
 default = ["use-ramdisk", "devfs", "ramfs", "fatfs"]
 
 [dependencies]
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }
 #cfg-if = "1.0"
 cfg-if = { path = "../../extern_crates/cfg-if-1.0.0" }
 lazy_init = { path = "../../crates/lazy_init" }

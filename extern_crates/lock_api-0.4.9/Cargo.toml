@@ -29,7 +29,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/Amanieu/parking_lot"
 
 [dependencies.owning_ref]
-version = "0.4.1"
+path = "../owning_ref-0.4.1"
 optional = true
 
 [dependencies.scopeguard]
@@ -38,7 +38,7 @@ path = "../scopeguard-1.1.0"
 default-features = false
 
 [dependencies.serde]
-version = "1.0.126"
+path = "../serde-1.0.159"
 optional = true
 default-features = false
 

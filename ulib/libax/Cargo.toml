@@ -43,7 +43,7 @@ user = ["axruntime/user", "axhal/user", "dep:log"]
 default = ["axtask?/sched_fifo", "user", "multitask"]
 
 [dependencies]
-log = { version = "0.4", optional = true }
+log = { path = "../../extern_crates/log-0.4.17", optional = true }
 spinlock = { path = "../../crates/spinlock" }
 axio = { path = "../../crates/axio" }
 axerrno = { path = "../../crates/axerrno" }

@@ -10,8 +10,8 @@ repository = "https://github.com/rcore-os/arceos/tree/main/crates/tuple_for_each
 documentation = "https://rcore-os.github.io/arceos/tuple_for_each/index.html"
 
 [dependencies]
-proc-macro2 = "1.0"
-quote = "1.0"
+proc-macro2 = { version = "1.0" }
+quote = { version = "1.0" }
 syn = "2.0"
 
 [lib]

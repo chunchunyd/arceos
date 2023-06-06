@@ -34,7 +34,7 @@ package = "rustc-std-workspace-std"
 [dependencies.unicode-width]
 path = "../../extern_crates/unicode-width-0.1.10"
 [dependencies.log]
-path = "../../extern_crates/log-0.4.17"
+path = "../log-0.4.17"
 
 [features]
 rustc-dep-of-std = ["unicode-width/rustc-dep-of-std", "std", "core"]

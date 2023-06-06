@@ -14,5 +14,5 @@ axsync = { path = "../axsync" }
 axlog = { path = "../axlog" }
 axhal = { path = "../axhal" }
 
-log = "0.4.0"
+log = { path = "../../extern_crates/log-0.4.17" }
 bitflags = "2.0"

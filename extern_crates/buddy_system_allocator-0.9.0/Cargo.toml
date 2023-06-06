@@ -40,16 +40,16 @@ path = "../../extern_crates/spin-0.9.8"
 optional = true
 
 [dev-dependencies.criterion]
-version = "0.3"
+path = "../criterion-0.5.1"
 
 [dev-dependencies.ctor]
-version = "0.1.23"
+path = "../ctor-0.2.2"
 
 [dev-dependencies.rand]
-version = "0.8.5"
+path = "../rand-0.8.5"
 
 [dev-dependencies.rand_chacha]
-version = "0.3.1"
+path = "../rand_chacha-0.3.1"
 
 [features]
 const_fn = []

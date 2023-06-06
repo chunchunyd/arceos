@@ -22,7 +22,7 @@ default = ["sched_fifo", "user", "multitask", "paging"]
 [dependencies]
 axlog = { path = "../axlog" }
 cfg-if = "1.0"
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }
 axalloc = { path = "../axalloc" }
 axhal = { path = "../axhal" }
 axconfig = { path = "../axconfig", optional = true }

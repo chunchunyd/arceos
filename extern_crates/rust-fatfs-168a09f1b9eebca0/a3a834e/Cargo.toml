@@ -40,7 +40,7 @@ default = ["chrono", "std", "alloc", "lfn", "unicode", "log_level_trace"]
 
 [dependencies]
 bitflags = "1.0"
-log = "0.4"
+log = { path = "../../log-0.4.17" }
 chrono = { version = "0.4", default-features = false, features = ["clock"], optional = true }
 
 [dev-dependencies]

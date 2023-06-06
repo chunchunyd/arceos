@@ -35,7 +35,7 @@ version = "0.3"
 optional = true
 
 [dev-dependencies.log]
-version = "0.4"
+path = "../log-0.4.17"
 
 [dev-dependencies.winapi]
 version = "0.3.0"

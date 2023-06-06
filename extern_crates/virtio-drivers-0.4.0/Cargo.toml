@@ -33,7 +33,7 @@ repository = "https://github.com/rcore-os/virtio-drivers"
 path = "../bitflags_1-1.3.2"
 
 [dependencies.log]
-path = "../../extern_crates/log-0.4.17"
+path = "../log-0.4.17"
 
 [dependencies.zerocopy]
 path = "../../extern_crates/zerocopy-0.6.1"

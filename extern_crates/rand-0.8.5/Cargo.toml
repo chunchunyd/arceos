@@ -31,7 +31,7 @@ rustdoc-args = ["--cfg", "doc_cfg"]
 [package.metadata.playground]
 features = ["small_rng", "serde1"]
 [dependencies.log]
-version = "0.4.4"
+path = "../log-0.4.17"
 optional = true
 
 [dependencies.packed_simd]
@@ -51,7 +51,7 @@ default-features = false
 path = "../rand_core-0.6.4"
 
 [dependencies.serde]
-version = "1.0.103"
+path = "../serde-1.0.159"
 features = ["derive"]
 optional = true
 

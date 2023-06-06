@@ -49,7 +49,7 @@ version = "0.2"
 optional = true
 
 [dependencies.serde]
-version = "1"
+path = "../serde-1.0.159"
 features = ["derive"]
 optional = true
 

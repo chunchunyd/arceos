@@ -52,7 +52,7 @@ replace = """
 exactly = 1
 
 [dependencies.bit_field]
-version = "0.10.1"
+path = "../bit_field-0.10.2"
 
 [dependencies.bitflags_1]
 path = "../bitflags_1-1.3.2"

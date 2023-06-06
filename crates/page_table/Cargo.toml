@@ -10,6 +10,6 @@ repository = "https://github.com/rcore-os/arceos/tree/main/crates/page_table"
 documentation = "https://rcore-os.github.io/arceos/page_table/index.html"
 
 [dependencies]
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }
 memory_addr = { path = "../memory_addr" }
 page_table_entry = { path = "../page_table_entry" }

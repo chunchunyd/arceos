@@ -33,7 +33,7 @@ default-features = false
 path = "../rand_core-0.6.4"
 
 [dependencies.serde]
-version = "1.0"
+path = "../serde-1.0.159"
 features = ["derive"]
 optional = true
 [dev-dependencies.serde_json]

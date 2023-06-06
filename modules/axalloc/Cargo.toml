@@ -7,7 +7,7 @@ authors = ["Yuekai Jia <equation618@gmail.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-log = "0.4"
+log = { path = "../../extern_crates/log-0.4.17" }
 spinlock = { path = "../../crates/spinlock" }
 memory_addr = { path = "../../crates/memory_addr" }
 allocator = { path = "../../crates/allocator" }
