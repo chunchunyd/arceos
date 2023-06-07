@@ -15,103 +15,7 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/helloworld/main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/memtest/axbuild.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/memtest/features.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/memtest/memtest.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/sqlite3/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/sqlite3/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/sqlite3/axbuild.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/sqlite3/features.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/c/sqlite3/main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/display/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/display/src/display.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/display/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/exception/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/exception/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fs/shell/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fs/shell/src/cmd.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fs/shell/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/memtest/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/memtest/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/echoserver/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/echoserver/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/httpclient/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/httpclient/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/httpserver/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/net/httpserver/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/parallel/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/parallel/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/sleep/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/sleep/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/yield/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/task/yield/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/allocator/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/allocator/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/axerrno/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axerrno/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/axfs_devfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axfs_devfs/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/axfs_ramfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axfs_ramfs/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/axfs_vfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axfs_vfs/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/axio/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/axio/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/crate_interface/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/crate_interface/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/driver_virtio/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/driver_virtio/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/page_table/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/page_table/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/percpu_macros/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/percpu_macros/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/slab_allocator/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/slab_allocator/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crates/tuple_for_each/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/tuple_for_each/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/adler-1.0.2/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/adler-1.0.2/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/bitflags-2.1.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/bitflags-2.1.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/bitflags_1-1.3.2/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/bitflags_1-1.3.2/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/buddy_system_allocator-0.9.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/buddy_system_allocator-0.9.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/byteorder-1.4.3/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/byteorder-1.4.3/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/chrono-0.4.24/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/chrono-0.4.24/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/crc32fast-1.3.2/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/crc32fast-1.3.2/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/fastrand-1.9.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/fastrand-1.9.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/flate2-1.0.25/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/flate2-1.0.25/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/getopts-0.2.21/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/getopts-0.2.21/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/hashbrown-0.12.3/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/hashbrown-0.12.3/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/libm-0.2.6/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/libm-0.2.6/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/lock_api-0.4.9/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/lock_api-0.4.9/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/log-0.4.17/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/log-0.4.17/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/proc-macro2-1.0.56/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/proc-macro2-1.0.56/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/quote-1.0.26/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/quote-1.0.26/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/rand-0.8.5/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rand-0.8.5/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/rand_chacha-0.3.1/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rand_chacha-0.3.1/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/rand_core-0.6.4/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rand_core-0.6.4/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/raw-cpuid-10.7.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/raw-cpuid-10.7.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/rust-fatfs-a3a834e/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/rust-fatfs-a3a834e/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/serde-1.0.159/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/serde-1.0.159/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/serde-1.0.159/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/serde-1.0.159/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/spin-0.9.8/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/spin-0.9.8/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/syn-1.0.109/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/syn-1.0.109/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/syn-2.0.13/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/syn-2.0.13/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/time-0.1.45/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/time-0.1.45/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/toml-0.5.11/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/toml-0.5.11/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/unicode-ident-1.0.8/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/unicode-ident-1.0.8/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/virtio-drivers-0.4.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/virtio-drivers-0.4.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/x86-0.52.0/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/x86-0.52.0/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/x86_64-0.14.10/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/x86_64-0.14.10/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/zerocopy-0.6.1/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/zerocopy-0.6.1/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern_crates/zerocopy-derive-0.3.2/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/extern_crates/zerocopy-derive-0.3.2/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kernel-qemu" beforeDir="false" afterPath="$PROJECT_DIR$/kernel-qemu" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axalloc/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axalloc/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axconfig/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axconfig/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axdisplay/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axdisplay/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axdriver/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axdriver/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axfs_os/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axfs_os/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axhal/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axhal/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axlog/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axlog/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axnet/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axnet/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axsyscall/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/axtask/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/modules/axtask/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/localize.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/localize.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ulib/c_libax/libax_bindings/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/ulib/c_libax/libax_bindings/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ulib/libax/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/ulib/libax/Cargo.toml" afterDir="false" />
-    </list>
+    <list default="true" id="7c62798e-00ca-45fb-8290-e63c15b16cfe" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="vendor" />
+        <entry key="$PROJECT_DIR$" value="67cbe1e44afb971f963597c9c996b5d6e10f0fb6" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -236,6 +140,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.handle_all" />
+        <item itemvalue="Python.handle_all" />
+        <item itemvalue="Python.handle_all" />
       </list>
     </recent_temporary>
   </component>
@@ -307,6 +213,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="tmp" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

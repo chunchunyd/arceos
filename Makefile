@@ -67,7 +67,8 @@ localize:
 	export CARGO_HOME=./crates_download
 	make build
 
-all: build
+all:
+	cp $(OUT_BIN) ./kernel-qemu
 
 include scripts/make/utils.mk
 include scripts/make/cargo.mk
